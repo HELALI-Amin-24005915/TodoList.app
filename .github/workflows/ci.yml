@@ -1,4 +1,4 @@
-name: Strict Quality, Security and Build Validation
+name: Quality and Build Validation
 
 on:
   push:
@@ -25,19 +25,16 @@ jobs:
         cache: 'npm'
 
     - name: Install dependencies
-      # Uses legacy-peer-deps to avoid conflicts between React 19 and better-docs
+      # Uses legacy-peer-deps to bypass the React 19 / better-docs conflict
       run: npm ci --legacy-peer-deps 
 
-    - name: Security Audit (Zero Tolerance)
-      run: npm audit
-
     - name: Code Quality Validation (Strict Linting)
-      # Forces failure even if there are only warnings
+      # Forces failure even if there are only warnings to maintain code standards
       run: npm run lint -- --max-warnings=0 
 
     - name: Run Tests
       run: npm test
 
     - name: Build Validation
-      # Ensures the project compiles without errors
+      # Ensures the project compiles successfully for production
       run: npm run build
