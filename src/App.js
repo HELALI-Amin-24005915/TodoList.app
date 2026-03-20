@@ -5,7 +5,6 @@ function MyButton() {
     <button>Je suis un bouton</button>
   );
 }
-
 function App() {
   return (
     <div className="App">

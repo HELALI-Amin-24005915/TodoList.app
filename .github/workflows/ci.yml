@@ -1,0 +1,43 @@
+name: Strict Quality, Security and Build Validation
+
+on:
+  push:
+    # Runs on all branches
+  pull_request:
+    # Runs on all Pull Requests
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      # Uses legacy-peer-deps to avoid conflicts between React 19 and better-docs
+      run: npm ci --legacy-peer-deps 
+
+    - name: Security Audit (Zero Tolerance)
+      run: npm audit
+
+    - name: Code Quality Validation (Strict Linting)
+      # Forces failure even if there are only warnings
+      run: npm run lint -- --max-warnings=0 
+
+    - name: Run Tests
+      run: npm test
+
+    - name: Build Validation
+      # Ensures the project compiles without errors
+      run: npm run build

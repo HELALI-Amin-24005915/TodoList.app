@@ -1,0 +1,5 @@
+echo "⏳ Running linter..."
+npm run lint -- --max-warnings=0
+
+echo "⏳ Running tests..."
+npm run test

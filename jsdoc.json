@@ -1,0 +1,27 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "source": {
+    "include": ["src"],
+    "includePattern": "\\.(jsx|js)$",
+    "excludePattern": "(node_modules/|docs/)"
+  },
+  "plugins": [
+    "plugins/markdown",
+    "node_modules/better-docs/category"
+  ],
+  "opts": {
+    "encoding": "utf8",
+    "destination": "docs/",
+    "readme": "README.md",
+    "recurse": true,
+    "template": "node_modules/better-docs"
+  },
+  "templates": {
+    "search": true,
+    "default": {
+      "includeDate": false
+    }
+  }
+}
