@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { TodoContext } from '../../contexts/TodoContext';
 import { ETAT_TERMINE } from '../../utils/constants';
+import Task from '../Task/Task';
 
 const TodoList = () => {
     //use useContext to get the tasks from the context
@@ -17,15 +18,12 @@ const TodoList = () => {
             
             {/*use .map() to transform tasks into HTML elements */}
             {tachesAffichees.length > 0 ? (
-                <ul>
+                <div className="tasks-container">
                     {tachesAffichees.map(tache => (
-                        <li key={tache.id}>
-                            <h3>{tache.title}</h3>
-                            <p>Échéance : {tache.date_echeance}</p>
-                            <p>État : {tache.etat}</p>
-                        </li>
+                        <Task key={tache.id} data={tache} />
+                        
                     ))}
-                </ul>
+                </div>
             ) : (
                 <p>Aucune tâche en cours !</p>
             )}

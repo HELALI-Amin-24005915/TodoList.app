@@ -32,13 +32,21 @@ export const TodoProvider = ({ children }) => {
         setFolders(folders.map(f => f.id === id ? { ...f, ...updatedFields } : f));
     };
 
+    const updateTask = (id, updatedFields) => {
+        setTasks(tasks.map (tasks =>
+            tasks.id === id ? { ...tasks, ...updatedFields } : tasks
+        ))
+    };
+
+
     const contextValue = {
         tasks, setTasks,
         folders, setFolders,
         relations, setRelations,
         addFolder,
         deleteFolder,
-        updateFolder
+        updateFolder,
+        updateTask
     };
 
     return (

@@ -1,0 +1,25 @@
+.task-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    background: white;
+}
+
+.task-card.overdue {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+}
+
+.priority-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.task-date.alert {
+    color: #dc3545;
+    font-weight: bold;
+}
