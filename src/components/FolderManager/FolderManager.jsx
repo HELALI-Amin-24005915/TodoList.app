@@ -22,13 +22,13 @@ const FolderManager = () => {
 
     return (
         <div className="folder-manager">
-            <h3>Manage Categories</h3>
+            <h3>Gérer les catégories</h3>
             <form onSubmit={handleSubmit} className="folder-form">
                 <input 
                     type="text" 
                     value={title} 
                     onChange={(e) => setTitle(e.target.value)} 
-                    placeholder="New Category..." 
+                    placeholder="Nouvelle catégorie..." 
                 />
                 <select value={color} onChange={(e) => setColor(e.target.value)}>
                     {availableColors.map(c => <option key={c} value={c}>{c}</option>)}
