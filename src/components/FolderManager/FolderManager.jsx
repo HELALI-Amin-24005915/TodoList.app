@@ -1,4 +1,3 @@
-// src/components/FolderManager/FolderManager.jsx
 import React, { useContext, useState } from 'react';
 import { TodoContext } from '../../contexts/TodoContext';
 import { 
@@ -43,16 +42,16 @@ const COLOR_LABELS_FR = {
 };
 
 const FolderManager = () => {
-    // 1. On récupère la fonction updateFolder du contexte
+    // use context to get folders and folder management functions
     const { folders, addFolder, deleteFolder, updateFolder } = useContext(TodoContext);
     
-    // States pour le formulaire
+    // state for form inputs
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [color, setColor] = useState('bluesky');
     const [iconKey, setIconKey] = useState('folder');
 
-    // 2. State pour savoir si on est en train de modifier un dossier (stocke l'ID)
+    // state to track if we are in edit mode and which folder is being edited
     const [editingId, setEditingId] = useState(null);
 
     const availableColors = [
@@ -60,22 +59,22 @@ const FolderManager = () => {
         'purple', 'yellow', 'grey', 'brown', 'cyan'
     ];
 
-    // 3. Fonction pour préparer le formulaire à la modification
+    //  function to handle edit button click, it fills the form with the folder's current data and switches to edit mode
     const handleEditClick = (folder) => {
         setTitle(folder.title);
         setDescription(folder.description || '');
         setColor(folder.color);
         setIconKey(folder.icon);
-        setEditingId(folder.id); // On passe en mode édition
+        setEditingId(folder.id); //switch to edit mode by setting the editingId to the folder's id
     };
 
-    // 4. Fonction pour annuler la modification
+    // function to handle cancel button click, it resets the form and exits edit mode
     const cancelEdit = () => {
         setTitle('');
         setDescription('');
         setColor('bluesky');
         setIconKey('folder');
-        setEditingId(null); // On repasse en mode création
+        setEditingId(null); //exit edit mode by resetting the editingId
     };
 
     const handleSubmit = (e) => {
@@ -87,15 +86,15 @@ const FolderManager = () => {
         }
 
         if (editingId) {
-            // MODE MISE À JOUR
+            // update existing folder
             updateFolder(editingId, { title, description, color, icon: iconKey });
             setEditingId(null);
         } else {
-            // MODE CRÉATION
+            // update the addFolder function to include type: "custom"
             addFolder({ title, description, color, icon: iconKey, type: "custom" });
         }
         
-        // Réinitialisation des champs après validation
+        // reset form fields after submission
         setTitle('');
         setDescription('');
         setIconKey('folder');
@@ -166,7 +165,7 @@ const FolderManager = () => {
                         </div>
                         <p className="folder-description">{folder.description}</p>
                         
-                        {/* Ajout des boutons d'action */}
+                        {/* add action buttons */}
                         <div className="folder-actions" style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: 'auto' }}>
                             <button 
                                 className="btn-edit" 
