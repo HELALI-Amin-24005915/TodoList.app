@@ -1,29 +1,44 @@
 import React, { createContext, useState } from 'react';
 import backupData from '../assets/backup.json';
 
-/**
- * Context for managing tasks, folders, and their relations across the app.
- */
 export const TodoContext = createContext();
 
-/**
- * Provider component that wraps the application and provides global state.
- * @param {Object} props
- * @param {React.ReactNode} props.children - Child components that need access to the context.
- */
 export const TodoProvider = ({ children }) => {
-    
-    const [taches, setTaches] = useState(backupData.taches);
-    const [dossiers, setDossiers] = useState(backupData.dossiers);
+    const [tasks, setTasks] = useState(backupData.taches);
+    const [folders, setFolders] = useState(backupData.dossiers);
     const [relations, setRelations] = useState(backupData.relations);
 
+    //CRUD for folders
+    const addFolder = (newFolder) => {
+        //Title must be at least 3 characters
+        if (newFolder.title && newFolder.title.length >= 3) {
+            const folderWithId = { 
+                ...newFolder, 
+                id: Date.now() 
+            };
+            setFolders([...folders, folderWithId]);
+            return true;
+        }
+        return false;
+    };
+
+    const deleteFolder = (id) => {
+        // Simple deletion of the folder
+        setFolders(folders.filter(f => f.id !== id));
+        setRelations(relations.filter(r => r.dossier !== id));
+    };
+
+    const updateFolder = (id, updatedFields) => {
+        setFolders(folders.map(f => f.id === id ? { ...f, ...updatedFields } : f));
+    };
+
     const contextValue = {
-        taches,
-        setTaches,
-        dossiers,
-        setDossiers,
-        relations,
-        setRelations
+        tasks, setTasks,
+        folders, setFolders,
+        relations, setRelations,
+        addFolder,
+        deleteFolder,
+        updateFolder
     };
 
     return (
