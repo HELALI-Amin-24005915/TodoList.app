@@ -61,21 +61,100 @@
 .icon-wrapper {
     font-size: 1.5rem;
     color: #555;
+    margin-right: 8px;
+}
+
+.folder-title {
+    margin: 0;
 }
 
 .folder-description {
     font-size: 0.9rem;
     color: #666;
+    margin-top: 10px;
     margin-bottom: 15px;
     flex-grow: 1;
 }
 
-.btn-delete {
-    background: #ff4d4d;
+.folder-form-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-cancel {
+    background: #6c757d;
     color: white;
+    padding: 12px;
     border: none;
-    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.folder-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.btn-edit {
+    background: #ffc107;
+    color: black;
+    border: none;
+    padding: 6px 12px;
     border-radius: 4px;
     cursor: pointer;
-    align-self: flex-end;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.folder-color-orange {
+    border-top: 5px solid var(--orange, orange);
+}
+
+.folder-color-pink {
+    border-top: 5px solid var(--pink, pink);
+}
+
+.folder-color-bluesky {
+    border-top: 5px solid var(--bluesky, lightskyblue);
+}
+
+.folder-color-green {
+    border-top: 5px solid var(--green, green);
+}
+
+.folder-color-red {
+    border-top: 5px solid var(--red, red);
+}
+
+.folder-color-purple {
+    border-top: 5px solid var(--purple, purple);
+}
+
+.folder-color-yellow {
+    border-top: 5px solid var(--yellow, gold);
+}
+
+.folder-color-grey {
+    border-top: 5px solid var(--grey, grey);
+}
+
+.folder-color-brown {
+    border-top: 5px solid var(--brown, brown);
+}
+
+.folder-color-cyan {
+    border-top: 5px solid var(--cyan, cyan);
+}
+
+.folder-color-default {
+    border-top: 5px solid var(--bluesky, lightskyblue);
 }

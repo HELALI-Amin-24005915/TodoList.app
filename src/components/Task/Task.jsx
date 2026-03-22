@@ -1,4 +1,11 @@
 import React from 'react';
+import { 
+    MdWarning, 
+    MdAccessTime, 
+    MdKeyboardDoubleArrowUp, 
+    MdKeyboardArrowUp, 
+    MdKeyboardArrowDown 
+} from 'react-icons/md';
 import './Task.css';
 
 /**
@@ -6,35 +13,55 @@ import './Task.css';
  * @param {Object} props.data - The task object.
  */
 const Task = ({ data }) => {
-    const { title, date_echeance, priority, etat } = data;
-
-    // Logic for deadline alert
-    const isOverdue = new Date(date_echeance) <= new Date();
+    // get task details from data
+    const { title, date_echeance, priority, priorite, etat } = data;
     
-    // Priority labels and colors
-    const priorityLabels = {
-        1: { label: 'Low', color: '#28a745' },
-        2: { label: 'Medium', color: '#ffc107' },
-        3: { label: 'High', color: '#dc3545' }
+    // define priority level with fallback to 2 (Moyenne) if not provided
+    const taskPriorityLevel = priority || priorite || 2; 
+
+    // logical to determine if the task is overdue or due today
+    const dueDate = new Date(date_echeance);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); 
+    
+    const isOverdue = dueDate < today;
+    const isToday = dueDate.getTime() === today.getTime();
+
+    // configure priority levels with labels and icons
+    const priorityConfig = {
+        1: { label: 'Basse', icon: <MdKeyboardArrowDown /> },
+        2: { label: 'Moyenne', icon: <MdKeyboardArrowUp /> },
+        3: { label: 'Haute', icon: <MdKeyboardDoubleArrowUp /> }
     };
+
+    const normalizedPriorityLevel = priorityConfig[taskPriorityLevel] ? taskPriorityLevel : 2;
+    const currentPriority = priorityConfig[normalizedPriorityLevel];
 
     return (
         <div className={`task-card ${isOverdue ? 'overdue' : ''}`}>
             <div className="task-header">
                 <h3>{title}</h3>
                 <span 
-                    className="priority-badge" 
-                    style={{ backgroundColor: priorityLabels[priority]?.color }}
+                    className={`priority-badge priority-badge-${normalizedPriorityLevel}`}
                 >
-                    {priorityLabels[priority]?.label || 'Level ' + priority}
+                    {currentPriority.icon}
+                    {currentPriority.label}
                 </span>
             </div>
             
-            <p className="task-status">Status: {etat}</p>
+            <p className="task-status">État : {etat}</p>
             
-            <p className={`task-date ${isOverdue ? 'alert' : ''}`}>
-                Deadline: {new Date(date_echeance).toLocaleDateString()} 
-                {isOverdue && " ⚠️ OVERDUE"}
+            <p 
+                className={`task-date task-date-content ${isOverdue || isToday ? 'alert' : ''}`}
+            >
+                <MdAccessTime size={18} /> 
+                Échéance : {dueDate.toLocaleDateString('fr-FR')} 
+                
+                {isOverdue && (
+                    <span className="task-overdue-label">
+                        <MdWarning size={20} /> EN RETARD
+                    </span>
+                )}
             </p>
         </div>
     );

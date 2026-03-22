@@ -6,6 +6,7 @@ import {
 } from 'react-icons/md';
 import './FolderManager.css';
 
+// association of icon keys to their respective components for easy rendering
 const ICON_COMPONENTS = {
     folder: <MdFolder />,
     home: <MdHome />,
@@ -17,6 +18,7 @@ const ICON_COMPONENTS = {
     team: <MdPeople />
 };
 
+// dictionaries to map icon and color keys to their French labels for user-friendly display in dropdowns
 const ICON_LABELS_FR = {
     folder: "Dossier Standard",
     home: "Maison / Personnel",
@@ -41,60 +43,65 @@ const COLOR_LABELS_FR = {
     cyan: "Cyan"
 };
 
+const COLOR_CLASS_NAMES = Object.keys(COLOR_LABELS_FR).reduce((acc, key) => {
+    acc[key] = `folder-color-${key}`;
+    return acc;
+}, {});
+
 const FolderManager = () => {
-    // use context to get folders and folder management functions
+    // get data and functions from context
     const { folders, addFolder, deleteFolder, updateFolder } = useContext(TodoContext);
     
-    // state for form inputs
+    // state for form inputs (title, description, color, icon) and editing mode
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [color, setColor] = useState('bluesky');
     const [iconKey, setIconKey] = useState('folder');
 
-    // state to track if we are in edit mode and which folder is being edited
+    // state to track which folder is being edited (null if creating a new one)
     const [editingId, setEditingId] = useState(null);
 
-    const availableColors = [
-        'orange', 'pink', 'bluesky', 'green', 'red', 
-        'purple', 'yellow', 'grey', 'brown', 'cyan'
-    ];
+    // 10 colors
+    const availableColors = Object.keys(COLOR_LABELS_FR);
 
-    //  function to handle edit button click, it fills the form with the folder's current data and switches to edit mode
+    const getFolderColorClass = (folderColor) => COLOR_CLASS_NAMES[folderColor] || 'folder-color-default';
+
+    //function to handle click on edit button, pre-filling the form with the folder's current data and switching to edit mode
     const handleEditClick = (folder) => {
         setTitle(folder.title);
         setDescription(folder.description || '');
-        setColor(folder.color);
-        setIconKey(folder.icon);
-        setEditingId(folder.id); //switch to edit mode by setting the editingId to the folder's id
+        setColor(folder.color || 'bluesky');
+        setIconKey(folder.icon || 'folder');
+        setEditingId(folder.id);
     };
 
-    // function to handle cancel button click, it resets the form and exits edit mode
+    // function to cancel editing, resetting the form and exiting edit mode
     const cancelEdit = () => {
         setTitle('');
         setDescription('');
         setColor('bluesky');
         setIconKey('folder');
-        setEditingId(null); //exit edit mode by resetting the editingId
+        setEditingId(null);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        if (title.length < 3) {
+        if (title.trim().length < 3) {
             alert("Le titre doit comporter au moins 3 caractères.");
             return;
         }
 
         if (editingId) {
-            // update existing folder
+            // UPDATE MODE : modify the existing folder
             updateFolder(editingId, { title, description, color, icon: iconKey });
             setEditingId(null);
         } else {
-            // update the addFolder function to include type: "custom"
+            // CREATE MODE : add a new folder
             addFolder({ title, description, color, icon: iconKey, type: "custom" });
         }
         
-        // reset form fields after submission
+        // reset form after submission
         setTitle('');
         setDescription('');
         setIconKey('folder');
@@ -138,12 +145,16 @@ const FolderManager = () => {
                     </select>
                 </div>
 
-                <div className="form-actions" style={{ display: 'flex', gap: '10px' }}>
+                <div className="form-actions folder-form-actions">
                     <button type="submit" className="btn-add">
                         {editingId ? "Mettre à jour" : "Créer la catégorie"}
                     </button>
                     {editingId && (
-                        <button type="button" className="btn-cancel" onClick={cancelEdit} style={{ background: '#6c757d', color: 'white', padding: '12px', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+                        <button 
+                            type="button" 
+                            className="btn-cancel" 
+                            onClick={cancelEdit} 
+                        >
                             Annuler
                         </button>
                     )}
@@ -154,32 +165,35 @@ const FolderManager = () => {
                 {folders.map(folder => (
                     <div 
                         key={folder.id} 
-                        className="folder-card" 
-                        style={{ borderTop: `5px solid var(--${folder.color}, ${folder.color})` }}
+                        className={`folder-card ${getFolderColorClass(folder.color)}`}
                     >
                         <div className="folder-header">
                             <span className="icon-wrapper">
                                 {ICON_COMPONENTS[folder.icon] || <MdFolder />}
                             </span>
-                            <h4>{folder.title}</h4>
+                            <h4 className="folder-title">{folder.title}</h4>
                         </div>
-                        <p className="folder-description">{folder.description}</p>
                         
-                        {/* add action buttons */}
-                        <div className="folder-actions" style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: 'auto' }}>
+                        {/* display description if it exists */}
+                        {folder.description && (
+                            <p className="folder-description">
+                                {folder.description}
+                            </p>
+                        )}
+                        
+                        <div className="folder-actions">
                             <button 
                                 className="btn-edit" 
                                 onClick={() => handleEditClick(folder)}
-                                style={{ background: '#ffc107', color: 'black', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
                             >
                                 Modifier
                             </button>
-                            <button 
-                                className="btn-delete" 
-                                onClick={() => deleteFolder(folder.id)}
+                                <button 
+                                    className="btn-delete" 
+                                    onClick={() => deleteFolder(folder.id)}
                             >
-                                Supprimer
-                            </button>
+                                    Supprimer
+                                </button>
                         </div>
                     </div>
                 ))}

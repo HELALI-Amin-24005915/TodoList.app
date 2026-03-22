@@ -14,10 +14,10 @@ function App() {
 
   return (
     <TodoProvider>
-      <div className="App" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <div className="App">
         <Header onToggleView={toggleView} isFolderView={showFolders} />
         
-        <main style={{ marginTop: '20px' }}>
+        <main className="app-main">
           <h1>Ma ToDo-List</h1>
           <p>
             BIEN JOUER LE CONTEXTE ET INITIALISER ET LE COMPONENT TODOLIST MARCHE 👍👍👍👍👍👍👍👍👍
