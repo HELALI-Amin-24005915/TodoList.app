@@ -10,7 +10,7 @@ const TodoList = () => {
     //filter to display only tasks that are not finished and sort by due date
     const tachesAffichees = tasks
         .filter(tache => !ETAT_TERMINE.includes(tache.etat))
-        .sort((a, b) => new Date(a.date_echeance) - new Date(b.date_echeance));
+        .sort((a, b) => new Date(b.date_echeance) - new Date(a.date_echeance));
 
     return (
         <div className="todo-list">
