@@ -32,6 +32,14 @@ export const TodoProvider = ({ children }) => {
         setFolders(folders.map(f => f.id === id ? { ...f, ...updatedFields } : f));
     };
 
+    const addTask = (newTask) => {
+        const taskWithId = {
+            ...newTask,
+            id: Date.now() 
+        };
+        setTasks([...tasks, taskWithId]);
+    };
+
     const updateTask = (id, updatedFields) => {
         setTasks(tasks.map (tasks =>
             tasks.id === id ? { ...tasks, ...updatedFields } : tasks
@@ -46,7 +54,8 @@ export const TodoProvider = ({ children }) => {
         addFolder,
         deleteFolder,
         updateFolder,
-        updateTask
+        updateTask,
+        addTask
     };
 
     return (

@@ -4,6 +4,7 @@ import { TodoProvider } from './contexts/TodoContext';
 import Header from './components/Header/Header';
 import TodoList from './components/TodoList/TodoList';
 import FolderManager from './components/FolderManager/FolderManager';
+import TaskForm from './components/TaskForm/TaskForm';
 
 function App() {
   const [showFolders, setShowFolders] = useState(false);
@@ -20,13 +21,17 @@ function App() {
         <main className="app-main">
           <h1>Ma ToDo-List</h1>
           <p>
-            BIEN JOUER LE CONTEXTE ET INITIALISER ET LE COMPONENT TODOLIST MARCHE 👍👍👍👍👍👍👍👍👍
+            BIEN JOUÉ LE CONTEXTE EST INITIALISÉ ET LE COMPONENT TODOLIST MARCHE 👍👍👍👍👍👍👍👍👍
           </p>
-          {/*switch between views*/ }
+          
+          {/* switch between views*/}
           {showFolders ? (
             <FolderManager />
           ) : (
-            <TodoList />
+            <>
+              <TaskForm />
+              <TodoList />
+            </>
           )}
         </main>
 
