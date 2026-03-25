@@ -51,6 +51,10 @@ export const TodoProvider = ({ children }) => {
         setRelations(relations.filter(r => r.tache !== taskId)); 
     };
 
+    const getTasksByFolder = (folderId) => {
+        return tasks.filter(task => task.folderId === folderId);
+    };
+
 
     const contextValue = {
         tasks, setTasks,
@@ -61,8 +65,11 @@ export const TodoProvider = ({ children }) => {
         updateFolder,
         updateTask,
         addTask,
-        deleteTask
+        deleteTask,
+        getTasksByFolder
     };
+
+
 
     return (
         <TodoContext.Provider value={contextValue}>

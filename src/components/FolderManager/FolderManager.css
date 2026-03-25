@@ -158,3 +158,22 @@
 .folder-color-default {
     border-top: 5px solid var(--bluesky, lightskyblue);
 }
+
+.folder-manager {
+    padding-top: 1rem;
+}
+
+.folder-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    background-color: #ffffff;
+}
+
+.folder-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+.folder-card.border-primary { border-left-color: #0d6efd !important; }
+.folder-card.border-warning { border-left-color: #ffc107 !important; }
+.folder-card.border-danger { border-left-color: #dc3545 !important; }
+.folder-card.border-success { border-left-color: #198754 !important; }

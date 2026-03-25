@@ -4,13 +4,14 @@ import { TodoContext } from '../../contexts/TodoContext';
 import { ETATS } from '../../utils/constants';
 
 const CreateItemModal = ({ show, onHide }) => {
-  const { addTask, addFolder } = useContext(TodoContext);
+  const { addTask, addFolder, folders } = useContext(TodoContext);
   const [activeTab, setActiveTab] = useState('task');
   
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
   const [taskDate, setTaskDate] = useState('');
   const [taskPriority, setTaskPriority] = useState(2);
+  const [taskFolder, setTaskFolder] = useState(''); 
   
   const [folderTitle, setFolderTitle] = useState('');
   const [folderColor, setFolderColor] = useState('bluesky'); 
@@ -25,11 +26,14 @@ const CreateItemModal = ({ show, onHide }) => {
         date_echeance: taskDate, 
         priorite: Number(taskPriority),
         etat: ETATS.NOUVEAU, 
+        folderId: taskFolder ? Number(taskFolder) : null 
       });
+      
       setTaskTitle(''); 
       setTaskDesc('');
       setTaskDate('');
       setTaskPriority(2);
+      setTaskFolder(''); 
       onHide(); 
     } else {
       alert("Veuillez remplir le titre (min 5 caractères) et la date d'échéance.");
@@ -67,7 +71,6 @@ const CreateItemModal = ({ show, onHide }) => {
           onSelect={(k) => setActiveTab(k)} 
           className="mb-3"
         >
-          {/* task view */}
           <Tab eventKey="task" title="Tâche">
             <Form onSubmit={handleTaskSubmit}>
               <Form.Group className="mb-3">
@@ -115,13 +118,27 @@ const CreateItemModal = ({ show, onHide }) => {
                 </Form.Group>
               </div>
 
+              <Form.Group className="mb-3">
+                <Form.Label>Associer à un dossier (Optionnel)</Form.Label>
+                <Form.Select 
+                  value={taskFolder}
+                  onChange={(e) => setTaskFolder(e.target.value)}
+                >
+                  <option value="">-- Aucun dossier --</option>
+                  {folders.map(folder => (
+                    <option key={folder.id} value={folder.id}>
+                      {folder.title}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+
               <div className="d-flex justify-content-end mt-2">
                 <Button variant="primary" type="submit">Créer la tâche</Button>
               </div>
             </Form>
           </Tab>
 
-          {/* folder view */}
           <Tab eventKey="folder" title="Dossier">
             <Form onSubmit={handleFolderSubmit}>
               <Form.Group className="mb-3">
