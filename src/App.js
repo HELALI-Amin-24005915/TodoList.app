@@ -4,10 +4,12 @@ import { TodoProvider } from './contexts/TodoContext';
 import Header from './components/Header/Header';
 import TodoList from './components/TodoList/TodoList';
 import FolderManager from './components/FolderManager/FolderManager';
-import TaskForm from './components/TaskForm/TaskForm';
+import Footer from './components/Footer/Footer';
+import CreateItemModal from './components/CreateItemModal/CreateItemModal';
 
 function App() {
   const [showFolders, setShowFolders] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleView = () => {
     setShowFolders(prev => !prev);
@@ -15,26 +17,25 @@ function App() {
 
   return (
     <TodoProvider>
-      <div className="App">
+      <div className="App pb-5">
         <Header onToggleView={toggleView} isFolderView={showFolders} />
         
-        <main className="app-main">
-          <h1>Ma ToDo-List</h1>
-          <p>
-            BIEN JOUÉ LE CONTEXTE EST INITIALISÉ ET LE COMPONENT TODOLIST MARCHE 👍👍👍👍👍👍👍👍👍
-          </p>
-          
-          {/* switch between views*/}
+        <main className="app-main container mt-4">
           {showFolders ? (
             <FolderManager />
           ) : (
             <>
-              <TaskForm />
               <TodoList />
             </>
           )}
         </main>
 
+        <Footer onOpenModal={() => setIsModalOpen(true)} />
+
+        <CreateItemModal 
+          show={isModalOpen} 
+          onHide={() => setIsModalOpen(false)} 
+        />
       </div>
     </TodoProvider>
   );
