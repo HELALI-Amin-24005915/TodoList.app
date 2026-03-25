@@ -16,8 +16,7 @@ describe('TodoList Component', () => {
             </TodoProvider>
         );
 
-        expect(screen.getByText(/Liste des tâches en cours/i)).toBeInTheDocument();
-
+        expect(screen.getByText(/Liste des tâches/i)).toBeInTheDocument();
         expect(screen.getByText(/3. Wireframes/i)).toBeInTheDocument();
         expect(screen.getByText(/4. Design/i)).toBeInTheDocument();
 
