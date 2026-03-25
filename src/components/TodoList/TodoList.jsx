@@ -3,16 +3,23 @@ import { Row, Col } from 'react-bootstrap';
 import { TodoContext } from '../../contexts/TodoContext';
 import { ETAT_TERMINE } from '../../utils/constants';
 import Task from '../Task/Task';
+
 import Filter from '../Filter/Filter';
 import Sort from '../Sort/Sort';
-
+import FolderFilter from '../Filter/FolderFilter'; 
 const TodoList = () => {
     const { tasks } = useContext(TodoContext);
 
     const [filterBy, setFilterBy] = useState('ACTIVE_ONLY');
     const [sortBy, setSortBy] = useState('date_echeance_desc');
+    const [folderFilter, setFolderFilter] = useState('ALL'); 
 
     const tachesAffichees = tasks
+        .filter(tache => {
+            if (folderFilter === 'ALL') return true;
+            if (folderFilter === 'NONE') return tache.folderId === null || tache.folderId === undefined;
+            return tache.folderId === Number(folderFilter);
+        })
         .filter(tache => {
             if (filterBy === 'ACTIVE_ONLY') return !ETAT_TERMINE.includes(tache.etat);
             if (filterBy === 'ALL') return true;
@@ -22,7 +29,7 @@ const TodoList = () => {
             if (sortBy === 'date_echeance_desc') return new Date(b.date_echeance) - new Date(a.date_echeance);
             if (sortBy === 'date_echeance_asc') return new Date(a.date_echeance) - new Date(b.date_echeance);
             if (sortBy === 'date_creation_desc') return new Date(b.date_creation) - new Date(a.date_creation);
-            if (sortBy === 'name_asc') return a.title.localeCompare(b.title); // Tri alphabétique
+            if (sortBy === 'name_asc') return a.title.localeCompare(b.title);
             return 0;
         });
 
@@ -32,11 +39,14 @@ const TodoList = () => {
             
             <div className="bg-light p-3 rounded mb-4 shadow-sm mt-3">
                 <Row>
-                    <Col md={6}>
+                    <Col md={4}>
                         <Sort currentSort={sortBy} onSortChange={setSortBy} />
                     </Col>
-                    <Col md={6}>
+                    <Col md={4}>
                         <Filter currentFilter={filterBy} onFilterChange={setFilterBy} />
+                    </Col>
+                    <Col md={4}>
+                        <FolderFilter currentFolder={folderFilter} onFolderChange={setFolderFilter} />
                     </Col>
                 </Row>
             </div>
