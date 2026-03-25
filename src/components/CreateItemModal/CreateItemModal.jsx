@@ -6,27 +6,33 @@ import { ETATS } from '../../utils/constants';
 const CreateItemModal = ({ show, onHide }) => {
   const { addTask, addFolder } = useContext(TodoContext);
   const [activeTab, setActiveTab] = useState('task');
-  // task form state
+  
   const [taskTitle, setTaskTitle] = useState('');
-  // state for folder form
+  const [taskDesc, setTaskDesc] = useState('');
+  const [taskDate, setTaskDate] = useState('');
+  const [taskPriority, setTaskPriority] = useState(2);
+  
   const [folderTitle, setFolderTitle] = useState('');
   const [folderColor, setFolderColor] = useState('bluesky'); 
-  // handle form submissions for both tasks and folders
+
   const handleTaskSubmit = (e) => {
     e.preventDefault();
-    if (taskTitle.length >= 5) {
+    if (taskTitle.length >= 5 && taskDate) {
       addTask({
         title: taskTitle,
-        description: "",
+        description: taskDesc,
         date_creation: new Date().toISOString().split('T')[0],
-        date_echeance: "", 
-        etat: ETATS.NOUVEAU,
-        equipiers: []
+        date_echeance: taskDate, 
+        priorite: Number(taskPriority),
+        etat: ETATS.NOUVEAU, 
       });
       setTaskTitle(''); 
-      onHide();
+      setTaskDesc('');
+      setTaskDate('');
+      setTaskPriority(2);
+      onHide(); 
     } else {
-      alert("Le titre de la tâche doit faire au moins 5 caractères.");
+      alert("Veuillez remplir le titre (min 5 caractères) et la date d'échéance.");
     }
   };
 
@@ -61,42 +67,76 @@ const CreateItemModal = ({ show, onHide }) => {
           onSelect={(k) => setActiveTab(k)} 
           className="mb-3"
         >
-          {/* TAB 1: TASK */}
+          {/* task view */}
           <Tab eventKey="task" title="Tâche">
             <Form onSubmit={handleTaskSubmit}>
               <Form.Group className="mb-3">
-                <Form.Label>Titre de la tâche (min 5 caractères)</Form.Label>
+                <Form.Label>Titre de la tâche *</Form.Label>
                 <Form.Control 
                   type="text" 
-                  placeholder="Entrer le titre de la tâche" 
+                  placeholder="Ex: Faire les courses" 
                   value={taskTitle}
                   onChange={(e) => setTaskTitle(e.target.value)}
-                  required
-                  minLength={5}
+                  required minLength={5}
                 />
               </Form.Group>
-              <div className="d-flex justify-content-end">
-                <Button variant="success" type="submit">Ajouter la tâche</Button>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Description</Form.Label>
+                <Form.Control 
+                  as="textarea" rows={2}
+                  placeholder="Détails optionnels..." 
+                  value={taskDesc}
+                  onChange={(e) => setTaskDesc(e.target.value)}
+                />
+              </Form.Group>
+
+              <div className="row">
+                <Form.Group className="col-md-6 mb-3">
+                  <Form.Label>Date d'échéance *</Form.Label>
+                  <Form.Control 
+                    type="date" 
+                    value={taskDate}
+                    onChange={(e) => setTaskDate(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group className="col-md-6 mb-3">
+                  <Form.Label>Priorité</Form.Label>
+                  <Form.Select 
+                    value={taskPriority}
+                    onChange={(e) => setTaskPriority(e.target.value)}
+                  >
+                    <option value={1}>1 - Haute (Rouge)</option>
+                    <option value={2}>2 - Moyenne (Jaune)</option>
+                    <option value={3}>3 - Basse (Bleu)</option>
+                  </Form.Select>
+                </Form.Group>
+              </div>
+
+              <div className="d-flex justify-content-end mt-2">
+                <Button variant="primary" type="submit">Créer la tâche</Button>
               </div>
             </Form>
           </Tab>
 
+          {/* folder view */}
           <Tab eventKey="folder" title="Dossier">
             <Form onSubmit={handleFolderSubmit}>
               <Form.Group className="mb-3">
-                <Form.Label>Nom du dossier (min 3 caractères)</Form.Label>
+                <Form.Label>Nom du dossier *</Form.Label>
                 <Form.Control 
                   type="text" 
-                  placeholder="Entrer le nom du dossier" 
+                  placeholder="Ex: Projet React" 
                   value={folderTitle}
                   onChange={(e) => setFolderTitle(e.target.value)}
-                  required
-                  minLength={3}
+                  required minLength={3}
                 />
               </Form.Group>
               
               <Form.Group className="mb-3">
-                <Form.Label>Couleur du dossier</Form.Label>
+                <Form.Label>Couleur</Form.Label>
                 <Form.Select 
                   value={folderColor} 
                   onChange={(e) => setFolderColor(e.target.value)}
@@ -109,7 +149,7 @@ const CreateItemModal = ({ show, onHide }) => {
               </Form.Group>
 
               <div className="d-flex justify-content-end">
-                <Button variant="success" type="submit">Ajouter le dossier</Button>
+                <Button variant="primary" type="submit">Créer le dossier</Button>
               </div>
             </Form>
           </Tab>

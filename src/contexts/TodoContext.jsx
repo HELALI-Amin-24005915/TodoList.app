@@ -46,6 +46,11 @@ export const TodoProvider = ({ children }) => {
         ))
     };
 
+    const deleteTask = (taskId) => {
+        setTasks(tasks.filter(t => t.id !== taskId));
+        setRelations(relations.filter(r => r.tache !== taskId)); 
+    };
+
 
     const contextValue = {
         tasks, setTasks,
@@ -55,7 +60,8 @@ export const TodoProvider = ({ children }) => {
         deleteFolder,
         updateFolder,
         updateTask,
-        addTask
+        addTask,
+        deleteTask
     };
 
     return (

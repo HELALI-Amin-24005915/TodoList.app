@@ -1,68 +1,55 @@
-import React from 'react';
-import { 
-    MdWarning, 
-    MdAccessTime, 
-    MdKeyboardDoubleArrowUp, 
-    MdKeyboardArrowUp, 
-    MdKeyboardArrowDown 
-} from 'react-icons/md';
+import React, { useContext } from 'react';
+import { TodoContext } from '../../contexts/TodoContext';
+import { ETATS } from '../../utils/constants';
+// 1. Importation des icônes professionnelles
+import { FaCheck, FaTrash } from 'react-icons/fa'; 
 import './Task.css';
 
-/**
- * Task component to display individual task details and priority alerts.
- * @param {Object} props.data - The task object.
- */
 const Task = ({ data }) => {
-    // get task details from data
-    const { title, date_echeance, priority, priorite, etat } = data;
-    
-    // define priority level with fallback to 2 (Moyenne) if not provided
-    const taskPriorityLevel = priority || priorite || 2; 
+    const { updateTask, deleteTask } = useContext(TodoContext);
 
-    // logical to determine if the task is overdue or due today
-    const dueDate = new Date(date_echeance);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); 
-    
-    const isOverdue = dueDate < today;
-    const isToday = dueDate.getTime() === today.getTime();
-
-    // configure priority levels with labels and icons
-    const priorityConfig = {
-        1: { label: 'Basse', icon: <MdKeyboardArrowDown /> },
-        2: { label: 'Moyenne', icon: <MdKeyboardArrowUp /> },
-        3: { label: 'Haute', icon: <MdKeyboardDoubleArrowUp /> }
+    const getPriorityColor = (priority) => {
+        switch(priority) {
+            case 1: return 'text-danger fw-bold';
+            case 2: return 'text-warning fw-bold';
+            case 3: return 'text-info fw-bold';
+            default: return 'text-secondary';
+        }
     };
 
-    const normalizedPriorityLevel = priorityConfig[taskPriorityLevel] ? taskPriorityLevel : 2;
-    const currentPriority = priorityConfig[normalizedPriorityLevel];
-
     return (
-        <div className={`task-card ${isOverdue ? 'overdue' : ''}`}>
-            <div className="task-header">
-                <h3>{title}</h3>
-                <span 
-                    className={`priority-badge priority-badge-${normalizedPriorityLevel}`}
-                >
-                    {currentPriority.icon}
-                    {currentPriority.label}
+        <div className="task-card p-3 mb-3 bg-white rounded shadow-sm border-start border-4 border-primary">
+            <div className="d-flex justify-content-between align-items-center mb-2">
+                <h5 className="m-0 text-dark">{data.title}</h5>
+                <span className={getPriorityColor(data.priority)}>
+                    Priorité : {data.priorite}
                 </span>
             </div>
             
-            <p className="task-status">État : {etat}</p>
+            <p className="text-muted small mb-2">{data.description}</p>
             
-            <p 
-                className={`task-date task-date-content ${isOverdue || isToday ? 'alert' : ''}`}
-            >
-                <MdAccessTime size={18} /> 
-                Échéance : {dueDate.toLocaleDateString('fr-FR')} 
-                
-                {isOverdue && (
-                    <span className="task-overdue-label">
-                        <MdWarning size={20} /> EN RETARD
-                    </span>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <span className="badge bg-secondary">{data.etat}</span>
+                <span className="text-muted small">Échéance : {data.date_echeance}</span>
+            </div>
+
+            <div className="d-flex gap-2 border-top pt-3 mt-2">
+                {data.etat !== ETATS.REUSSI && (
+                    <button 
+                        className="btn btn-sm btn-success flex-grow-1 d-flex align-items-center justify-content-center gap-2"
+                        onClick={() => updateTask(data.id, { etat: ETATS.REUSSI })}
+                    >
+                        <FaCheck /> Terminer
+                    </button>
                 )}
-            </p>
+                
+                <button 
+                    className="btn btn-sm btn-outline-danger d-flex align-items-center justify-content-center gap-2"
+                    onClick={() => deleteTask(data.id)}
+                >
+                    <FaTrash /> Supprimer
+                </button>
+            </div>
         </div>
     );
 };
