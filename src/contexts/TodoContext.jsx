@@ -23,8 +23,8 @@ export const TodoProvider = ({ children }) => {
     };
 
     const deleteFolder = (id) => {
-        // Simple deletion of the folder
         setFolders(folders.filter(f => f.id !== id));
+        setTasks(tasks.filter(t => t.folderId !== id));
         setRelations(relations.filter(r => r.dossier !== id));
     };
 
