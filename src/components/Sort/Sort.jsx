@@ -1,0 +1,27 @@
+import React from 'react';
+import { Form } from 'react-bootstrap';
+import './Sort.css';
+
+
+const Sort = ({ currentSort, onSortChange }) => {
+  return (
+    <div className="sort-container">
+      <Form.Group controlId="taskSortSelect">
+        <Form.Label className="sort-label">Trier par :</Form.Label>
+        <Form.Select 
+          value={currentSort} 
+          onChange={(e) => onSortChange(e.target.value)}
+          size="sm"
+          className="sort-select"
+        >
+          <option value="date_echeance_desc">Date d'échéance (Plus récente)</option>
+          <option value="date_echeance_asc">Date d'échéance (Plus lointaine)</option>
+          <option value="name_asc">Nom de la tâche (A-Z)</option>
+          <option value="date_creation_desc">Date de création (Plus récente)</option>
+        </Form.Select>
+      </Form.Group>
+    </div>
+  );
+};
+
+export default Sort;
