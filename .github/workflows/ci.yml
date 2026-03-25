@@ -32,8 +32,10 @@ jobs:
       # Forces failure even if there are only warnings to maintain code standards
       run: npm run lint -- --max-warnings=0 
 
-    - name: Run Tests
+    - name: Run tests
       run: npm test
+      env:
+          CI: true
 
     - name: Build Validation
       # Ensures the project compiles successfully for production
