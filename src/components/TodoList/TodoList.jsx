@@ -8,7 +8,7 @@ import Filter from '../Filter/Filter';
 import Sort from '../Sort/Sort';
 import FolderFilter from '../Filter/FolderFilter'; 
 const TodoList = () => {
-    const { tasks } = useContext(TodoContext);
+    const { tasks, relations } = useContext(TodoContext);
 
     const [filterBy, setFilterBy] = useState('ACTIVE_ONLY');
     const [sortBy, setSortBy] = useState('date_echeance_desc');
@@ -17,8 +17,10 @@ const TodoList = () => {
     const tachesAffichees = tasks
         .filter(tache => {
             if (folderFilter === 'ALL') return true;
-            if (folderFilter === 'NONE') return tache.folderId === null || tache.folderId === undefined;
-            return tache.folderId === Number(folderFilter);
+            if (folderFilter === 'NONE') return !relations.some(relation => relation.tache === tache.id);
+            return relations.some(
+                relation => relation.tache === tache.id && relation.dossier === Number(folderFilter)
+            );
         })
         .filter(tache => {
             if (filterBy === 'ACTIVE_ONLY') return !ETAT_TERMINE.includes(tache.etat);

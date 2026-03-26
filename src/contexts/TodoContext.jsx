@@ -33,11 +33,16 @@ export const TodoProvider = ({ children }) => {
     };
 
     const addTask = (newTask) => {
+        const { folderId, ...taskData } = newTask;
         const taskWithId = {
-            ...newTask,
+            ...taskData,
             id: Date.now() 
         };
         setTasks([...tasks, taskWithId]);
+
+        if (folderId !== null && folderId !== undefined) {
+            setRelations([...relations, { tache: taskWithId.id, dossier: Number(folderId) }]);
+        }
     };
 
     const updateTask = (id, updatedFields) => {
@@ -52,7 +57,19 @@ export const TodoProvider = ({ children }) => {
     };
 
     const getTasksByFolder = (folderId) => {
-        return tasks.filter(task => task.folderId === folderId);
+        const taskIds = relations
+            .filter(relation => relation.dossier === Number(folderId))
+            .map(relation => relation.tache);
+
+        return tasks.filter(task => taskIds.includes(task.id));
+    };
+
+    const getFoldersByTask = (taskId) => {
+        const folderIds = relations
+            .filter(relation => relation.tache === taskId)
+            .map(relation => relation.dossier);
+
+        return folders.filter(folder => folderIds.includes(folder.id));
     };
 
 
@@ -66,7 +83,8 @@ export const TodoProvider = ({ children }) => {
         updateTask,
         addTask,
         deleteTask,
-        getTasksByFolder
+        getTasksByFolder,
+        getFoldersByTask
     };
 
 
