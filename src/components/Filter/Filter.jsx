@@ -24,9 +24,7 @@ const Filter = ({ currentFilter, onFilterChange }) => {
           {/* Default view according to project specs */}
           <option value="ACTIVE_ONLY">Tâches en cours</option>
           <option value="ALL">Toute les tâches</option>
-          
-          <hr />
-          
+                    
           <option value={ETATS.NOUVEAU}>Nouveau</option>
           <option value={ETATS.EN_COURS}>En cours</option>
           <option value={ETATS.EN_ATTENTE}>En attente</option>
