@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { FaFilter } from 'react-icons/fa';
 import { ETATS } from '../../utils/constants';
 import './Filter.css';
 
@@ -14,7 +15,7 @@ const Filter = ({ currentFilter, onFilterChange }) => {
   return (
     <div className="filter-container">
       <Form.Group controlId="taskStatusFilter">
-        <Form.Label className="filter-label">Filtrer par statut</Form.Label>
+        <Form.Label className="filter-label d-flex align-items-center gap-2"><FaFilter /> Filtrer par statut</Form.Label>
         <Form.Select 
           value={currentFilter} 
           onChange={(e) => onFilterChange(e.target.value)}

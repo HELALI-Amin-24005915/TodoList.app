@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Form } from 'react-bootstrap';
+import { FaFolderOpen } from 'react-icons/fa';
 import { TodoContext } from '../../contexts/TodoContext';
 
 const FolderFilter = ({ currentFolder, onFolderChange }) => {
@@ -8,7 +9,7 @@ const FolderFilter = ({ currentFolder, onFolderChange }) => {
   return (
     <div className="filter-container">
       <Form.Group controlId="taskFolderFilter">
-        <Form.Label className="filter-label">Filtrer par dossier</Form.Label>
+        <Form.Label className="filter-label d-flex align-items-center gap-2"><FaFolderOpen /> Filtrer par dossier</Form.Label>
         <Form.Select 
           value={currentFolder} 
           onChange={(e) => onFolderChange(e.target.value)}
