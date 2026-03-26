@@ -1,9 +1,19 @@
 .task-card {
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    background: white;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    padding: 16px;
+    margin: 0;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
+    overflow: visible; /* permet à l'overlay de ne pas être coupé */
+    z-index: 1;
+}
+
+.task-card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 
 .task-card.overdue {
@@ -12,26 +22,35 @@
 }
 
 .priority-badge {
-    padding: 4px 8px;
-    border-radius: 4px;
-    color: white;
-    font-size: 0.8rem;
-    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 900;
     display: flex;
     align-items: center;
     gap: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .priority-badge-1 {
-    background-color: #28a745;
+    /* 1 - Haute: rouge */
+    background-color: #dc3545;
 }
 
 .priority-badge-2 {
     background-color: #ffc107;
+    color: #1f2937;
+    border-color: rgba(255, 193, 7, 0.35);
 }
 
 .priority-badge-3 {
-    background-color: #dc3545;
+    /* 3 - Basse: bleu */
+    background-color: #0d6efd;
+}
+
+.folder-badge {
+    font-weight: 900;
 }
 
 .task-date-content {
@@ -52,4 +71,91 @@
 .task-date.alert {
     color: #dc3545;
     font-weight: bold;
+}
+
+.etat-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: 0.82rem;
+    border: 1px solid var(--border);
+    background: rgba(100, 116, 139, 0.08);
+}
+
+.etat-nouveaux {
+    background: rgba(13, 110, 253, 0.12);
+    border-color: rgba(13, 110, 253, 0.25);
+    color: #0b57d0;
+}
+
+.etat-en-cours {
+    background: rgba(255, 193, 7, 0.16);
+    border-color: rgba(255, 193, 7, 0.32);
+    color: #7a5600;
+}
+
+.etat-en-attente {
+    background: rgba(25, 135, 84, 0.13);
+    border-color: rgba(25, 135, 84, 0.28);
+    color: #146c43;
+}
+
+.etat-reussi {
+    background: rgba(40, 167, 69, 0.13);
+    border-color: rgba(40, 167, 69, 0.28);
+    color: #1f7a33;
+}
+
+.etat-abandonne {
+    background: rgba(220, 53, 69, 0.12);
+    border-color: rgba(220, 53, 69, 0.25);
+    color: #b02a37;
+}
+
+.task-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Sur mobile, empiler les actions pour éviter des boutons trop étroits */
+@media (max-width: 576px) {
+    .task-actions {
+        flex-direction: column;
+    }
+
+    .task-actions .btn {
+        width: 100%;
+    }
+}
+
+.task-expanded {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: #ffffff;
+    box-shadow: var(--shadow-md);
+}
+
+.task-edit .form-control,
+.task-edit .form-select {
+    border-radius: 12px;
+}
+
+.task-card.is-expanded {
+    z-index: 5; /* permet à l'overlay de passer au-dessus des cartes voisines */
+}
+
+@media (max-width: 576px) {
+    .task-expanded {
+        top: calc(100% + 8px);
+        padding: 12px 14px;
+    }
 }

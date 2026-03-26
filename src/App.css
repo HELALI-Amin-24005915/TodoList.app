@@ -1,8 +1,16 @@
 .App {
-	padding: 20px;
-	font-family: Arial, sans-serif;
+	padding: 18px 16px;
+	min-height: 100vh;
+	padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px));
 }
 
 .app-main {
-	margin-top: 20px;
+	margin-top: 16px;
+}
+
+/* Better default headings inside main container */
+.app-main h2 {
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	color: var(--text);
 }

@@ -173,7 +173,22 @@
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 }
 
+.folder-manager h2,
+.folder-manager h4 {
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+.folder-card {
+    border-radius: var(--radius);
+}
+
 .folder-card.border-primary { border-left-color: #0d6efd !important; }
 .folder-card.border-warning { border-left-color: #ffc107 !important; }
 .folder-card.border-danger { border-left-color: #dc3545 !important; }
 .folder-card.border-success { border-left-color: #198754 !important; }
+
+.folder-edit .form-control,
+.folder-edit .form-select {
+    border-radius: 12px;
+}

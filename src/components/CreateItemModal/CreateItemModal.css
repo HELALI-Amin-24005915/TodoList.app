@@ -1,0 +1,51 @@
+
+.create-item-modal .modal-content {
+	border-radius: 18px;
+	border: 1px solid var(--border);
+	box-shadow: var(--shadow-md);
+	background: rgba(255, 255, 255, 0.96);
+}
+
+.create-item-modal__header {
+	border-bottom: 1px solid var(--border);
+	background: linear-gradient(135deg, rgba(13, 110, 253, 0.12), rgba(99, 102, 241, 0.08));
+}
+
+.create-item-modal__header .modal-title {
+	font-weight: 900;
+	letter-spacing: -0.02em;
+}
+
+.create-item-modal__tabs .nav-tabs {
+	border-bottom: 1px solid var(--border);
+}
+
+.create-item-modal__tabs .nav-link {
+	border-radius: 999px;
+	font-weight: 800;
+	padding: 8px 14px;
+	color: var(--muted);
+}
+
+.create-item-modal__tabs .nav-link.active {
+	color: var(--text);
+	background: rgba(13, 110, 253, 0.12);
+	border-color: rgba(13, 110, 253, 0.25);
+}
+
+.create-item-modal .form-control,
+.create-item-modal .form-select {
+	border-radius: 12px !important;
+	border: 1px solid rgba(15, 23, 42, 0.14) !important;
+}
+
+.create-item-modal .form-control:focus,
+.create-item-modal .form-select:focus {
+	border-color: rgba(13, 110, 253, 0.55) !important;
+	box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1) !important;
+}
+
+.create-item-modal .btn-primary {
+	border-radius: 999px !important;
+	font-weight: 900;
+}

@@ -1,4 +1,28 @@
+.footer {
+	background: rgba(255, 255, 255, 0.78) !important;
+	backdrop-filter: blur(10px);
+	border-top: 1px solid var(--border) !important;
+	box-shadow: 0 -10px 25px rgba(2, 6, 23, 0.08);
+	padding: 10px 12px !important;
+	padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
 .footer .btn {
-	width: 60px;
-	height: 60px;
+	width: 62px;
+	height: 62px;
+	border-radius: 999px !important;
+	font-weight: 800;
+	transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.footer .btn:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 14px 25px rgba(13, 110, 253, 0.22) !important;
+}
+
+@media (min-width: 768px) {
+	.footer .btn {
+		width: 58px;
+		height: 58px;
+	}
 }

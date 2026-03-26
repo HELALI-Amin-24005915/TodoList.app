@@ -10,15 +10,28 @@ import CreateItemModal from './components/CreateItemModal/CreateItemModal';
 function App() {
   const [showFolders, setShowFolders] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalInitialTab, setModalInitialTab] = useState('task');
 
   const toggleView = () => {
     setShowFolders(prev => !prev);
   };
 
+  const openCreateModal = (tab = 'task') => {
+    setModalInitialTab(tab);
+    setIsModalOpen(true);
+  };
+
   return (
     <TodoProvider>
-      <div className="App pb-5">
-        <Header onToggleView={toggleView} isFolderView={showFolders} />
+      <div className="App">
+        <Header
+          onToggleView={toggleView}
+          isFolderView={showFolders}
+          onCreateTask={() => openCreateModal('task')}
+          onCreateFolder={() => openCreateModal('folder')}
+          onGoTasks={() => setShowFolders(false)}
+          onGoFolders={() => setShowFolders(true)}
+        />
         
         <main className="app-main container mt-4">
           {showFolders ? (
@@ -30,11 +43,12 @@ function App() {
           )}
         </main>
 
-        <Footer onOpenModal={() => setIsModalOpen(true)} />
+        <Footer onOpenModal={() => openCreateModal('task')} />
 
         <CreateItemModal 
           show={isModalOpen} 
           onHide={() => setIsModalOpen(false)} 
+          initialTab={modalInitialTab}
         />
       </div>
     </TodoProvider>

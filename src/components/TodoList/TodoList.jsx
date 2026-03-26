@@ -7,6 +7,7 @@ import Task from '../Task/Task';
 import Filter from '../Filter/Filter';
 import Sort from '../Sort/Sort';
 import FolderFilter from '../Filter/FolderFilter'; 
+import './TodoList.css';
 const TodoList = () => {
     const { tasks, relations } = useContext(TodoContext);
 
@@ -39,7 +40,7 @@ const TodoList = () => {
         <div className="todo-list">
             <h2>Liste des tâches ({tachesAffichees.length})</h2>
             
-            <div className="bg-light p-3 rounded mb-4 shadow-sm mt-3">
+            <div className="todo-controls p-3 rounded mb-4 shadow-sm mt-3">
                 <Row>
                     <Col md={4}>
                         <Sort currentSort={sortBy} onSortChange={setSortBy} />
@@ -54,7 +55,7 @@ const TodoList = () => {
             </div>
             
             {tachesAffichees.length > 0 ? (
-                <div className="tasks-container mt-3">
+                <div className="tasks-container">
                     {tachesAffichees.map(tache => (
                         <Task key={tache.id} data={tache} />
                     ))}

@@ -1,0 +1,33 @@
+
+.todo-list h2 {
+	font-weight: 900;
+	letter-spacing: -0.02em;
+	margin-bottom: 14px;
+}
+
+.todo-controls {
+	background: rgba(255, 255, 255, 0.72);
+	border: 1px solid var(--border);
+}
+
+/* Grille responsive pour cartes tâches */
+.tasks-container {
+	margin-top: 12px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+	gap: 12px;
+	align-items: start; /* évite que les cartes d'une même ligne s'étirent quand une carte s'ouvre */
+}
+
+@media (max-width: 576px) {
+	.tasks-container {
+		grid-template-columns: 1fr;
+	}
+}
+
+.todo-list .alert-info {
+	border: 1px solid rgba(13, 110, 253, 0.2);
+	border-radius: var(--radius);
+	background: rgba(13, 110, 253, 0.06);
+	color: var(--text);
+}

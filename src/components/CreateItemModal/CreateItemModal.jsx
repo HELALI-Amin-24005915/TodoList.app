@@ -1,17 +1,20 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Modal, Tabs, Tab, Button, Form } from 'react-bootstrap';
 import { TodoContext } from '../../contexts/TodoContext';
 import { ETATS } from '../../utils/constants';
+import './CreateItemModal.css';
 
-const CreateItemModal = ({ show, onHide }) => {
+const CreateItemModal = ({ show, onHide, initialTab = 'task' }) => {
   const { addTask, addFolder, folders } = useContext(TodoContext);
   const [activeTab, setActiveTab] = useState('task');
   
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
   const [taskDate, setTaskDate] = useState('');
+  const [taskEtat, setTaskEtat] = useState(ETATS.NOUVEAU);
   const [taskPriority, setTaskPriority] = useState(2);
   const [taskFolder, setTaskFolder] = useState(''); 
+  const [taskEquipiers, setTaskEquipiers] = useState('');
   
   const [folderTitle, setFolderTitle] = useState('');
   const [folderColor, setFolderColor] = useState('bluesky'); 
@@ -25,15 +28,21 @@ const CreateItemModal = ({ show, onHide }) => {
         date_creation: new Date().toISOString().split('T')[0],
         date_echeance: taskDate, 
         priorite: Number(taskPriority),
-        etat: ETATS.NOUVEAU, 
+        etat: taskEtat,
+        equipiers: taskEquipiers
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean),
         folderId: taskFolder ? Number(taskFolder) : null 
       });
       
       setTaskTitle(''); 
       setTaskDesc('');
       setTaskDate('');
+      setTaskEtat(ETATS.NOUVEAU);
       setTaskPriority(2);
       setTaskFolder(''); 
+      setTaskEquipiers('');
       onHide(); 
     } else {
       alert("Veuillez remplir le titre (min 5 caractères) et la date d'échéance.");
@@ -58,9 +67,13 @@ const CreateItemModal = ({ show, onHide }) => {
     }
   };
 
+  useEffect(() => {
+    if (show) setActiveTab(initialTab);
+  }, [show, initialTab]);
+
   return (
-    <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
+    <Modal show={show} onHide={onHide} centered className="create-item-modal">
+      <Modal.Header closeButton className="create-item-modal__header">
         <Modal.Title>Créer un nouvel élément</Modal.Title>
       </Modal.Header>
       
@@ -69,7 +82,7 @@ const CreateItemModal = ({ show, onHide }) => {
           id="create-item-tabs" 
           activeKey={activeTab} 
           onSelect={(k) => setActiveTab(k)} 
-          className="mb-3"
+          className="create-item-modal__tabs mb-3"
         >
           <Tab eventKey="task" title="Tâche">
             <Form onSubmit={handleTaskSubmit}>
@@ -118,6 +131,32 @@ const CreateItemModal = ({ show, onHide }) => {
                 </Form.Group>
               </div>
 
+              <div className="row">
+                <Form.Group className="col-md-6 mb-3">
+                  <Form.Label>Statut</Form.Label>
+                  <Form.Select
+                    value={taskEtat}
+                    onChange={(e) => setTaskEtat(e.target.value)}
+                  >
+                    <option value={ETATS.NOUVEAU}>Nouveau</option>
+                    <option value={ETATS.EN_COURS}>En cours</option>
+                    <option value={ETATS.EN_ATTENTE}>En attente</option>
+                    <option value={ETATS.REUSSI}>Réussi</option>
+                    <option value={ETATS.ABANDONNE}>Abandonné</option>
+                  </Form.Select>
+                </Form.Group>
+
+                <Form.Group className="col-md-6 mb-3">
+                  <Form.Label>Équipiers (séparés par des virgules)</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Ex: Paul, Bob"
+                    value={taskEquipiers}
+                    onChange={(e) => setTaskEquipiers(e.target.value)}
+                  />
+                </Form.Group>
+              </div>
+
               <Form.Group className="mb-3">
                 <Form.Label>Associer à un dossier (Optionnel)</Form.Label>
                 <Form.Select 
@@ -162,6 +201,12 @@ const CreateItemModal = ({ show, onHide }) => {
                   <option value="orange">Orange</option>
                   <option value="pink">Rose</option>
                   <option value="green">Vert</option>
+                  <option value="purple">Violet</option>
+                  <option value="red">Rouge</option>
+                  <option value="yellow">Jaune</option>
+                  <option value="cyan">Cyan</option>
+                  <option value="grey">Gris</option>
+                  <option value="brown">Marron</option>
                 </Form.Select>
               </Form.Group>
 

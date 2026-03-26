@@ -4,7 +4,23 @@ import backupData from '../assets/backup.json';
 export const TodoContext = createContext();
 
 export const TodoProvider = ({ children }) => {
-    const [tasks, setTasks] = useState(backupData.taches);
+    const normalizeEquipiers = (equipiers) => {
+        if (!Array.isArray(equipiers)) return [];
+        return equipiers
+            .map((e) => {
+                if (typeof e === 'string') return e.trim();
+                if (e && typeof e === 'object' && typeof e.name === 'string') return e.name.trim();
+                return '';
+            })
+            .filter(Boolean);
+    };
+
+    const [tasks, setTasks] = useState(
+        (backupData.taches || []).map((t) => ({
+            ...t,
+            equipiers: normalizeEquipiers(t.equipiers),
+        }))
+    );
     const [folders, setFolders] = useState(backupData.dossiers);
     const [relations, setRelations] = useState(backupData.relations);
 
@@ -36,6 +52,7 @@ export const TodoProvider = ({ children }) => {
         const { folderId, ...taskData } = newTask;
         const taskWithId = {
             ...taskData,
+            equipiers: normalizeEquipiers(taskData.equipiers),
             id: Date.now() 
         };
         setTasks([...tasks, taskWithId]);

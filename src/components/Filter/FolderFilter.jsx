@@ -18,7 +18,6 @@ const FolderFilter = ({ currentFolder, onFolderChange }) => {
         >
           <option value="ALL">Tous les dossiers</option>
           <option value="NONE">Tâches sans dossier</option>
-          <hr />
           {folders.map(folder => (
             <option key={folder.id} value={folder.id}>
               {folder.title}

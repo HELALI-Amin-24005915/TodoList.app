@@ -4,7 +4,7 @@
  * @enum {string}
  */
 export const ETATS = {
-    NOUVEAUX: 'Nouveaux',
+    NOUVEAU: 'Nouveau',
     EN_COURS: 'En cours',
     REUSSI: 'Réussi',
     EN_ATTENTE: 'En attente',
