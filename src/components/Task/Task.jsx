@@ -49,30 +49,30 @@ const Task = ({ data }) => {
         }
     };
 
-    const getFolderBadgeStyle = (color) => {
+    const getFolderBadgeClass = (color) => {
         switch (color) {
             case 'bluesky':
-                return { backgroundColor: 'rgba(13,110,253,0.12)', borderColor: 'rgba(13,110,253,0.35)', color: '#0b57d0' };
+                return 'folder-badge-bluesky';
             case 'orange':
-                return { backgroundColor: 'rgba(253,126,20,0.12)', borderColor: 'rgba(253,126,20,0.35)', color: '#a85a12' };
+                return 'folder-badge-orange';
             case 'pink':
-                return { backgroundColor: 'rgba(214,51,132,0.12)', borderColor: 'rgba(214,51,132,0.35)', color: '#9b2c6b' };
+                return 'folder-badge-pink';
             case 'green':
-                return { backgroundColor: 'rgba(25,135,84,0.12)', borderColor: 'rgba(25,135,84,0.32)', color: '#146c43' };
+                return 'folder-badge-green';
             case 'purple':
-                return { backgroundColor: 'rgba(111,66,193,0.12)', borderColor: 'rgba(111,66,193,0.32)', color: '#522e91' };
+                return 'folder-badge-purple';
             case 'red':
-                return { backgroundColor: 'rgba(220,53,69,0.12)', borderColor: 'rgba(220,53,69,0.25)', color: '#b02a37' };
+                return 'folder-badge-red';
             case 'yellow':
-                return { backgroundColor: 'rgba(255,193,7,0.16)', borderColor: 'rgba(255,193,7,0.35)', color: '#7a5600' };
+                return 'folder-badge-yellow';
             case 'cyan':
-                return { backgroundColor: 'rgba(13,202,240,0.12)', borderColor: 'rgba(13,202,240,0.35)', color: '#087990' };
+                return 'folder-badge-cyan';
             case 'grey':
-                return { backgroundColor: 'rgba(108,117,125,0.12)', borderColor: 'rgba(108,117,125,0.32)', color: '#495057' };
+                return 'folder-badge-grey';
             case 'brown':
-                return { backgroundColor: 'rgba(121,85,72,0.12)', borderColor: 'rgba(121,85,72,0.32)', color: '#4e342e' };
+                return 'folder-badge-brown';
             default:
-                return { backgroundColor: 'rgba(100,116,139,0.12)', borderColor: 'rgba(100,116,139,0.32)', color: '#475569' };
+                return 'folder-badge-default';
         }
     };
 
@@ -97,8 +97,7 @@ const Task = ({ data }) => {
                 {taskFolders.slice(0, 2).map(folder => (
                     <span
                         key={folder.id}
-                        className="badge border folder-badge"
-                        style={getFolderBadgeStyle(folder.color)}
+                        className={`badge border folder-badge ${getFolderBadgeClass(folder.color)}`}
                     >
                         {folder.title}
                     </span>
@@ -185,8 +184,7 @@ const Task = ({ data }) => {
                         {taskFolders.map(folder => (
                             <span
                                 key={`full-${folder.id}`}
-                                className="badge border folder-badge"
-                                style={getFolderBadgeStyle(folder.color)}
+                                className={`badge border folder-badge ${getFolderBadgeClass(folder.color)}`}
                             >
                                 {folder.title}
                             </span>

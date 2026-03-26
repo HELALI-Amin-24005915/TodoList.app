@@ -26,19 +26,57 @@ const FolderManager = () => {
         []
     );
 
-    const getFolderHex = (color) => {
+    const getFolderCardBorderClass = (color) => {
         switch (color) {
-            case 'bluesky': return '#0d6efd';
-            case 'orange': return '#fd7e14';
-            case 'pink': return '#d63384';
-            case 'green': return '#198754';
-            case 'purple': return '#6f42c1';
-            case 'red': return '#dc3545';
-            case 'yellow': return '#ffc107';
-            case 'cyan': return '#0dcaf0';
-            case 'grey': return '#6c757d';
-            case 'brown': return '#795548';
-            default: return '#94a3b8';
+            case 'bluesky':
+                return 'folder-card-border-bluesky';
+            case 'orange':
+                return 'folder-card-border-orange';
+            case 'pink':
+                return 'folder-card-border-pink';
+            case 'green':
+                return 'folder-card-border-green';
+            case 'purple':
+                return 'folder-card-border-purple';
+            case 'red':
+                return 'folder-card-border-red';
+            case 'yellow':
+                return 'folder-card-border-yellow';
+            case 'cyan':
+                return 'folder-card-border-cyan';
+            case 'grey':
+                return 'folder-card-border-grey';
+            case 'brown':
+                return 'folder-card-border-brown';
+            default:
+                return 'folder-card-border-default';
+        }
+    };
+
+    const getFolderTitleColorClass = (color) => {
+        switch (color) {
+            case 'bluesky':
+                return 'folder-title-bluesky';
+            case 'orange':
+                return 'folder-title-orange';
+            case 'pink':
+                return 'folder-title-pink';
+            case 'green':
+                return 'folder-title-green';
+            case 'purple':
+                return 'folder-title-purple';
+            case 'red':
+                return 'folder-title-red';
+            case 'yellow':
+                return 'folder-title-yellow';
+            case 'cyan':
+                return 'folder-title-cyan';
+            case 'grey':
+                return 'folder-title-grey';
+            case 'brown':
+                return 'folder-title-brown';
+            default:
+                return 'folder-title-default';
         }
     };
 
@@ -82,21 +120,18 @@ const FolderManager = () => {
                         const isEditing = editingFolderId === folder.id;
 
                         return (
-                            <div key={folder.id} className="col-md-4 mb-4">
+                            <div
+                                key={folder.id} 
+                                className={`col-md-4 mb-4`}
+                            >
                                 <div
-                                    className="card shadow-sm h-100 folder-card"
-                                    style={{
-                                        borderLeftWidth: '5px',
-                                        borderLeftStyle: 'solid',
-                                        borderLeftColor: getFolderHex(folder.color),
-                                    }}
+                                    className={`card shadow-sm h-100 folder-card ${getFolderCardBorderClass(folder.color)}`}
                                 >
                                     <div className="card-body">
                                         {!isEditing ? (
                                             <>
                                                 <h4
-                                                    className="card-title d-flex align-items-center gap-2 mb-2"
-                                                    style={{ color: getFolderHex(folder.color) }}
+                                                    className={`card-title d-flex align-items-center gap-2 mb-2 ${getFolderTitleColorClass(folder.color)}`}
                                                 >
                                                     <FaFolderOpen /> {folder.title}
                                                 </h4>

@@ -53,6 +53,73 @@
     font-weight: 900;
 }
 
+/* Folder badge color variants */
+.folder-badge-bluesky {
+    background-color: rgba(13, 110, 253, 0.12);
+    border-color: rgba(13, 110, 253, 0.35);
+    color: #0b57d0;
+}
+
+.folder-badge-orange {
+    background-color: rgba(253, 126, 20, 0.12);
+    border-color: rgba(253, 126, 20, 0.35);
+    color: #a85a12;
+}
+
+.folder-badge-pink {
+    background-color: rgba(214, 51, 132, 0.12);
+    border-color: rgba(214, 51, 132, 0.35);
+    color: #9b2c6b;
+}
+
+.folder-badge-green {
+    background-color: rgba(25, 135, 84, 0.12);
+    border-color: rgba(25, 135, 84, 0.32);
+    color: #146c43;
+}
+
+.folder-badge-purple {
+    background-color: rgba(111, 66, 193, 0.12);
+    border-color: rgba(111, 66, 193, 0.32);
+    color: #522e91;
+}
+
+.folder-badge-red {
+    background-color: rgba(220, 53, 69, 0.12);
+    border-color: rgba(220, 53, 69, 0.25);
+    color: #b02a37;
+}
+
+.folder-badge-yellow {
+    background-color: rgba(255, 193, 7, 0.16);
+    border-color: rgba(255, 193, 7, 0.35);
+    color: #7a5600;
+}
+
+.folder-badge-cyan {
+    background-color: rgba(13, 202, 240, 0.12);
+    border-color: rgba(13, 202, 240, 0.35);
+    color: #087990;
+}
+
+.folder-badge-grey {
+    background-color: rgba(108, 117, 125, 0.12);
+    border-color: rgba(108, 117, 125, 0.32);
+    color: #495057;
+}
+
+.folder-badge-brown {
+    background-color: rgba(121, 85, 72, 0.12);
+    border-color: rgba(121, 85, 72, 0.32);
+    color: #4e342e;
+}
+
+.folder-badge-default {
+    background-color: rgba(100, 116, 139, 0.12);
+    border-color: rgba(100, 116, 139, 0.32);
+    color: #475569;
+}
+
 .task-date-content {
     display: flex;
     align-items: center;
