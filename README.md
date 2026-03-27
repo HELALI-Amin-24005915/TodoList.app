@@ -1,122 +1,142 @@
-# TodoList.app
+<div align="center">
+  <h1>✨ TodoList.app</h1>
+  <p><i>A comprehensive, responsive, and robust React task management application.</i></p>
 
-A React task management app with folders, multi-criteria filtering, sorting, advanced editing, and a responsive UI (mobile + desktop).
+  <!-- Tech Stack Badges -->
+  <p>
+    <a href="https://reactjs.org/" target="_blank">
+      <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+    </a>
+    <a href="https://getbootstrap.com" target="_blank">
+      <img src="https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap" />
+    </a>
+    <a href="https://mui.com/" target="_blank">
+      <img src="https://img.shields.io/badge/Material%20UI-007FFF?style=for-the-badge&logo=mui&logoColor=white" alt="MUI" />
+    </a>
+    <a href="https://www.chartjs.org/" target="_blank">
+      <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white" alt="Chart.js" />
+    </a>
+    <a href="https://nodejs.org/" target="_blank">
+      <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js" />
+    </a>
+    <a href="https://github.com/features/actions" target="_blank">
+      <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions" />
+    </a>
+  </p>
+</div>
 
-## Documentation
+---
 
-- Technical project documentation: [documentation/PROJECT_DOCUMENTATION.md](documentation/PROJECT_DOCUMENTATION.md)
-- Local API documentation (JSDoc) after generation: [docs/index.html](docs/index.html)
-- Deployed documentation (GitHub Pages): https://helali-amin-24005915.github.io/TodoList.app/
+## 📖 Overview
 
-The workflow already used to publish the documentation is: [.github/workflows/deploy-docs.yml](.github/workflows/deploy-docs.yml)
+A React task management app with folders, multi-criteria filtering, sorting, advanced editing, and a responsive UI tailored for both mobile and desktop experiences.
 
-## Main features
+## ✨ Main Features
 
-- Task management: create, edit, delete, and mark as completed.
-- Folder management: create, edit, delete, with color coding.
-- Many-to-many task-folder relationship.
-- Combined filters:
-	- by status (multi-select)
-	- by folder (multi-select)
-	- tasks without folder
-	- hide tasks overdue by more than 7 days
-- Task sorting:
-	- due date (asc/desc)
-	- creation date
-	- alphabetical order
-- Contextual navigation:
-	- Tasks mode / Folders mode
-	- click a folder to switch to tasks filtered by that folder
-	- clickable folder badges on tasks for quick filtering
-- Reset to the initial backup data at startup.
+### 📝 Task Management
+- **Full CRUD Operations**: Create, edit, delete, and mark tasks as completed.
+- **Many-to-Many Relationships**: Flexibly link tasks to multiple folders.
 
-## Technical stack
+### 📁 Folder Management
+- **Organize & Customize**: Create, edit, and delete folders with color coding for quick visual identification.
 
-- React 18 (Create React App)
-- Context API for global state
-- React-Bootstrap + Bootstrap 5
-- React Icons + MUI Icons
-- Chart.js (summary chart in the header)
-- JSDoc + better-docs
+### 🔍 Advanced Filtering & Sorting
+- **Combined Filters**: 
+  - Filter by status (multi-select)
+  - Filter by folder (multi-select)
+  - View tasks without a folder
+  - Automatically hide tasks overdue by more than 7 days
+- **Dynamic Sorting**:
+  - Due date (ascending / descending)
+  - Creation date
+  - Alphabetical order
 
-## Installation
+### 🧭 Contextual Navigation
+- **Seamless Switching**: Readily toggle between **Tasks mode** and **Folders mode**.
+- **Quick Filtering**: Click a folder to instantly view its tasks, or click folder badges directly on individual tasks.
+- **Data Reset**: Easily restore the initial backup data at startup.
 
-Prerequisites:
+---
 
-- Node.js 18+ recommended
-- npm
+## 🛠️ Technical Stack
 
-Install dependencies:
+- **[React 18](https://react.dev/)**: Core framework (Create React App)
+- **Context API**: Global state management ensuring a single source of truth
+- **[React-Bootstrap](https://react-bootstrap.netlify.app/) & Bootstrap 5**: Responsive layout grids and UI components
+- **[React Icons](https://react-icons.github.io/react-icons/) & [MUI Icons](https://mui.com/components/material-icons/)**: Comprehensive iconography
+- **[Chart.js](https://www.chartjs.org/)**: Summary charts and statistics visualization
+- **[JSDoc](https://jsdoc.app/) & [better-docs](https://github.com/SoftwareBrothers/better-docs)**: Code documentation generation
 
-```bash
-npm install
-```
+---
 
-If you encounter a peer dependency conflict related to better-docs:
+## ⚙️ Installation & Setup
 
-```bash
-npm install --legacy-peer-deps
-```
+### Prerequisites
+- **Node.js**: 18+ recommended
+- **npm**: Node Package Manager
 
-## Scripts
+### Quick Start
 
-### Run in development
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+   > **Note:** If you encounter a peer dependency conflict related to `better-docs`, run:
+   > ```bash
+   > npm install --legacy-peer-deps
+   > ```
 
-```bash
-npm start
-```
+2. **Run the application in development mode:**
+   ```bash
+   npm start
+   ```
+   *Open [http://localhost:3000](http://localhost:3000) to view it in the browser.*
 
-### Run tests
+---
 
-```bash
-npm test
-```
+## 📜 Available Scripts
 
-### Lint
+| Command | Description |
+|---------|-------------|
+| `npm start` | Runs the app in development mode. |
+| `npm test` | Launches the test runner in interactive watch mode. |
+| `npm run lint` | Runs ESLint to check code quality. |
+| `npm run build` | Builds the app for production to the `build` folder. |
+| `npm run docs` | Generates JSDoc documentation inside the `docs/` folder. |
 
-```bash
-npm run lint
-```
+---
 
-### Production build
+## 🏗️ Architecture Summary
 
-```bash
-npm run build
-```
+- `src/App.js`: App composition, context provider, conditional tasks/folders rendering, and creation modal.
+- `src/contexts/TodoContext.jsx`: Single source of truth for tasks, folders, relations, current view, and folder filters.
+- `src/components/TodoList`: Tasks view with sorting, filtering, and task card rendering.
+- `src/components/FolderManager`: Folders view, folder editing, and folder-to-tasks navigation.
+- `src/components/Task`: Task display/editing and folder association management.
+- `src/components/Header`: App statistics, mobile menu, view switch, and startup reset modal.
+- `src/components/CreateItemModal`: Shared modal for task and folder creation.
 
-### Generate JSDoc documentation
+> **Deep Dive:** For detailed architecture and flow information, read the [Project Documentation](documentation/PROJECT_DOCUMENTATION.md).
 
-```bash
-npm run docs
-```
+---
 
-## Architecture (summary)
+## 📚 Documentation
 
-- `src/App.js`: app composition, context provider, conditional tasks/folders rendering, creation modal.
-- `src/contexts/TodoContext.jsx`: single source of truth for tasks, folders, relations, current view, and folder filters.
-- `src/components/TodoList`: tasks view, sorting + filtering + task card rendering.
-- `src/components/FolderManager`: folders view, folder editing, folder->tasks navigation.
-- `src/components/Task`: task display/editing and folder association management.
-- `src/components/Header`: statistics, mobile menu, view switch, startup reset modal.
-- `src/components/CreateItemModal`: task and folder creation.
+- **Technical Documentation**: [documentation/PROJECT_DOCUMENTATION.md](documentation/PROJECT_DOCUMENTATION.md)
+- **Local API Docs (JSDoc)**: Available at `docs/index.html` after running `npm run docs`.
+- **Deployed API Docs**: Hosted via GitHub Pages at [https://helali-amin-24005915.github.io/TodoList.app/](https://helali-amin-24005915.github.io/TodoList.app/)
 
-For architecture and flow details, see [documentation/PROJECT_DOCUMENTATION.md](documentation/PROJECT_DOCUMENTATION.md).
+### Automated Deployment
+The repository contains a GitHub Actions workflow that automates documentation deployment:
+1. Installs dependencies
+2. Generates JSDoc 
+3. Publishes to GitHub Pages
 
-## Documentation deployment
+Workflow configuration: [`.github/workflows/deploy-docs.yml`](.github/workflows/deploy-docs.yml)
 
-The repository contains a GitHub Actions workflow that:
+---
 
-1. installs dependencies,
-2. generates JSDoc (`npm run docs`),
-3. publishes the `docs/` content to GitHub Pages.
+## 🧪 Quality Notes
 
-Workflow: [.github/workflows/deploy-docs.yml](.github/workflows/deploy-docs.yml)
-
-After enabling GitHub Pages in the repository, the final URL follows this format:
-
-- https://helali-amin-24005915.github.io/TodoList.app/
-
-## Quality notes
-
-- CI validation: strict lint + tests + build on Node 18 and 20.
-- Workflow CI: [.github/workflows/ci.yml](.github/workflows/ci.yml)
+- **CI Validation**: Strict linting, testing, and building on Node 18 and 20.
+- **CI Workflow Configuration**: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
