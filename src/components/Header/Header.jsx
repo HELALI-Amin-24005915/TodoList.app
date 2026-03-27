@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import { Offcanvas, Button } from 'react-bootstrap';
+import { Offcanvas, Button, Modal } from 'react-bootstrap';
 import { FaBars, FaListCheck, FaFolderOpen, FaPlus } from 'react-icons/fa6';
 import { TodoContext } from '../../contexts/TodoContext';
 import { ETAT_TERMINE } from '../../utils/constants';
@@ -9,10 +9,37 @@ import './Header.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const Header = ({ onToggleView, isFolderView, onCreateTask, onCreateFolder, onGoTasks, onGoFolders }) => {
+const Header = ({ onCreateTask, onCreateFolder }) => {
   // get tasks from context to calculate stats for the header
-  const { tasks } = useContext(TodoContext);
+  const {
+    tasks,
+    currentView,
+    goToTasksView,
+    goToFoldersView,
+    resetFromBackup,
+  } = useContext(TodoContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const isFolderView = currentView === 'folders';
+
+  useEffect(() => {
+    setIsResetModalOpen(true);
+  }, []);
+
+  const handleToggleView = () => {
+    if (isFolderView) goToTasksView();
+    else goToFoldersView();
+  };
+
+  const closeResetModal = () => {
+    setIsResetModalOpen(false);
+  };
+
+  const handleResetAll = () => {
+    resetFromBackup();
+    setIsResetModalOpen(false);
+    setIsMenuOpen(false);
+  };
 
   // calculate stats for the header
   const totalTasks = tasks.length;
@@ -63,9 +90,11 @@ const Header = ({ onToggleView, isFolderView, onCreateTask, onCreateFolder, onGo
 
       <div className="header-brand">
         <h1>Gestion de tâches</h1>
-        <button className="btn btn-outline-primary ms-3 header-toggle-view" onClick={onToggleView}>
-          {isFolderView ? 'Voir les tâches' : 'Gérer les dossiers'}
-        </button>
+        <div className="d-flex flex-wrap gap-2 align-items-center">
+          <button className="btn btn-outline-primary ms-3 header-toggle-view" onClick={handleToggleView}>
+            {isFolderView ? 'Voir les tâches' : 'Gérer les dossiers'}
+          </button>
+        </div>
       </div>
 
       <div className="header-stats">
@@ -98,8 +127,7 @@ const Header = ({ onToggleView, isFolderView, onCreateTask, onCreateFolder, onGo
               variant={isFolderView ? 'outline-primary' : 'primary'}
               className="d-flex align-items-center justify-content-between"
               onClick={() => {
-                if (typeof onGoTasks === 'function') onGoTasks();
-                else if (typeof onToggleView === 'function' && isFolderView) onToggleView();
+                goToTasksView();
                 setIsMenuOpen(false);
               }}
             >
@@ -112,8 +140,7 @@ const Header = ({ onToggleView, isFolderView, onCreateTask, onCreateFolder, onGo
               variant={isFolderView ? 'primary' : 'outline-primary'}
               className="d-flex align-items-center justify-content-between"
               onClick={() => {
-                if (typeof onGoFolders === 'function') onGoFolders();
-                else if (typeof onToggleView === 'function' && !isFolderView) onToggleView();
+                goToFoldersView();
                 setIsMenuOpen(false);
               }}
             >
@@ -149,9 +176,34 @@ const Header = ({ onToggleView, isFolderView, onCreateTask, onCreateFolder, onGo
                 <FaPlus /> Nouveau dossier
               </span>
             </Button>
+
           </div>
         </Offcanvas.Body>
       </Offcanvas>
+
+      <Modal
+        show={isResetModalOpen}
+        onHide={closeResetModal}
+        centered
+        className="header-reset-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Reinitialiser les donnees</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Voulez-vous reinitialiser les taches, dossiers et relations des le lancement ?
+          <br />
+          <span className="text-muted">Si vous confirmez, les donnees seront rechargees depuis la sauvegarde initiale.</span>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-secondary" onClick={closeResetModal}>
+            Non, continuer
+          </Button>
+          <Button variant="danger" onClick={handleResetAll}>
+            Oui, reinitialiser
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </header>
   );
 };

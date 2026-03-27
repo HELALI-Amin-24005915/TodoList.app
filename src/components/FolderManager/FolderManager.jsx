@@ -4,11 +4,14 @@ import { FaFolderOpen, FaTrash, FaListUl, FaPen, FaXmark, FaFloppyDisk } from 'r
 import './FolderManager.css';
 
 const FolderManager = () => {
-    const { folders, deleteFolder, getTasksByFolder, updateFolder } = useContext(TodoContext);
-    const [editingFolderId, setEditingFolderId] = useState(null);
-    const [editTitle, setEditTitle] = useState('');
-    const [editDescription, setEditDescription] = useState('');
-    const [editColor, setEditColor] = useState('bluesky');
+    const {
+        folders,
+        deleteFolder,
+        getTasksByFolder,
+        updateFolder,
+        selectFolderAndGoToTasks,
+    } = useContext(TodoContext);
+    const [editingFolder, setEditingFolder] = useState(null);
 
     const colorOptions = useMemo(
         () => ([
@@ -81,29 +84,41 @@ const FolderManager = () => {
     };
 
     const startEdit = (folder) => {
-        setEditingFolderId(folder.id);
-        setEditTitle(folder.title || '');
-        setEditDescription(folder.description || '');
-        setEditColor(folder.color || 'bluesky');
+        setEditingFolder({
+            id: folder.id,
+            title: folder.title || '',
+            description: folder.description || '',
+            color: folder.color || 'bluesky',
+        });
     };
 
     const cancelEdit = () => {
-        setEditingFolderId(null);
-        setEditTitle('');
-        setEditDescription('');
-        setEditColor('bluesky');
+        setEditingFolder(null);
+    };
+
+    const handleEditFieldChange = (field, value) => {
+        setEditingFolder((prev) => {
+            if (!prev) return prev;
+            return { ...prev, [field]: value };
+        });
     };
 
     const saveEdit = () => {
-        if (editTitle.trim().length < 3) {
+        if (!editingFolder?.id) {
+            return;
+        }
+
+        if (editingFolder.title.trim().length < 3) {
             alert("Le nom du dossier doit faire au moins 3 caractères.");
             return;
         }
-        updateFolder(editingFolderId, {
-            title: editTitle.trim(),
-            description: editDescription,
-            color: editColor,
+
+        updateFolder(editingFolder.id, {
+            title: editingFolder.title.trim(),
+            description: editingFolder.description,
+            color: editingFolder.color,
         });
+
         cancelEdit();
     };
 
@@ -114,18 +129,32 @@ const FolderManager = () => {
             </div>
 
             {folders.length > 0 ? (
-                <div className="row">
+                <div className="row g-3 align-items-start">
                     {folders.map(folder => {
                         const folderTasks = getTasksByFolder(folder.id);
-                        const isEditing = editingFolderId === folder.id;
+                        const isEditing = editingFolder?.id === folder.id;
+                        const isAnyEditing = Boolean(editingFolder?.id);
 
                         return (
                             <div
                                 key={folder.id} 
-                                className={`col-md-4 mb-4`}
+                                className={`col-sm-6 col-lg-4 folder-col`}
                             >
                                 <div
-                                    className={`card shadow-sm h-100 folder-card ${getFolderCardBorderClass(folder.color)}`}
+                                    className={`card shadow-sm folder-card ${getFolderCardBorderClass(folder.color)}`}
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={() => {
+                                        if (!isAnyEditing && !isEditing) {
+                                            selectFolderAndGoToTasks(folder.id);
+                                        }
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if ((e.key === 'Enter' || e.key === ' ') && !isAnyEditing && !isEditing) {
+                                            e.preventDefault();
+                                            selectFolderAndGoToTasks(folder.id);
+                                        }
+                                    }}
                                 >
                                     <div className="card-body">
                                         {!isEditing ? (
@@ -146,9 +175,10 @@ const FolderManager = () => {
                                                     <label className="form-label small fw-bold">Nom *</label>
                                                     <input
                                                         className="form-control form-control-sm"
-                                                        value={editTitle}
-                                                        onChange={(e) => setEditTitle(e.target.value)}
+                                                        value={editingFolder?.title || ''}
+                                                        onChange={(e) => handleEditFieldChange('title', e.target.value)}
                                                         minLength={3}
+                                                        onClick={(e) => e.stopPropagation()}
                                                     />
                                                 </div>
 
@@ -156,9 +186,10 @@ const FolderManager = () => {
                                                     <label className="form-label small fw-bold">Description</label>
                                                     <textarea
                                                         className="form-control form-control-sm"
-                                                        value={editDescription}
-                                                        onChange={(e) => setEditDescription(e.target.value)}
+                                                        value={editingFolder?.description || ''}
+                                                        onChange={(e) => handleEditFieldChange('description', e.target.value)}
                                                         rows={2}
+                                                        onClick={(e) => e.stopPropagation()}
                                                     />
                                                 </div>
 
@@ -166,8 +197,9 @@ const FolderManager = () => {
                                                     <label className="form-label small fw-bold">Couleur</label>
                                                     <select
                                                         className="form-select form-select-sm"
-                                                        value={editColor}
-                                                        onChange={(e) => setEditColor(e.target.value)}
+                                                        value={editingFolder?.color || 'bluesky'}
+                                                        onChange={(e) => handleEditFieldChange('color', e.target.value)}
+                                                        onClick={(e) => e.stopPropagation()}
                                                     >
                                                         {colorOptions.map((c) => (
                                                             <option key={c.value} value={c.value}>
@@ -184,40 +216,52 @@ const FolderManager = () => {
                                             {folderTasks.length} tâche(s) associée(s)
                                         </p>
                                     </div>
-                                    <div className="card-footer bg-transparent border-0 text-end">
-                                        {!isEditing ? (
-                                            <button
-                                                className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2 me-2"
-                                                onClick={() => startEdit(folder)}
+                                    <div className="card-footer bg-transparent border-0">
+                                        <div className="folder-actions-group">
+                                            {!isEditing ? (
+                                                <button
+                                                    className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        startEdit(folder);
+                                                    }}
+                                                >
+                                                    <FaPen /> Modifier
+                                                </button>
+                                            ) : (
+                                                <>
+                                                    <button
+                                                        className="btn btn-primary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            saveEdit();
+                                                        }}
+                                                    >
+                                                        <FaFloppyDisk /> Enregistrer
+                                                    </button>
+                                                    <button
+                                                        className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            cancelEdit();
+                                                        }}
+                                                    >
+                                                        <FaXmark /> Annuler
+                                                    </button>
+                                                </>
+                                            )}
+                                            <button 
+                                                className="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-2"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if(window.confirm(`Voulez-vous vraiment supprimer le dossier "${folder.title}" ?`)) {
+                                                        deleteFolder(folder.id);
+                                                    }
+                                                }}
                                             >
-                                                <FaPen /> Modifier
+                                                <FaTrash /> Supprimer
                                             </button>
-                                        ) : (
-                                            <>
-                                                <button
-                                                    className="btn btn-primary btn-sm d-inline-flex align-items-center gap-2 me-2"
-                                                    onClick={saveEdit}
-                                                >
-                                                    <FaFloppyDisk /> Enregistrer
-                                                </button>
-                                                <button
-                                                    className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2 me-2"
-                                                    onClick={cancelEdit}
-                                                >
-                                                    <FaXmark /> Annuler
-                                                </button>
-                                            </>
-                                        )}
-                                        <button 
-                                            className="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2"
-                                            onClick={() => {
-                                                if(window.confirm(`Voulez-vous vraiment supprimer le dossier "${folder.title}" ?`)) {
-                                                    deleteFolder(folder.id);
-                                                }
-                                            }}
-                                        >
-                                            <FaTrash /> Supprimer
-                                        </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

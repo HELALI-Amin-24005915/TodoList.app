@@ -1,14 +1,14 @@
 
 .create-item-modal .modal-content {
 	border-radius: 18px;
-	border: 1px solid var(--border);
-	box-shadow: var(--shadow-md);
+	border: 1px solid rgba(15, 23, 42, 0.11);
+	box-shadow: 0 24px 54px rgba(15, 23, 42, 0.2);
 	background: rgba(255, 255, 255, 0.96);
 }
 
 .create-item-modal__header {
 	border-bottom: 1px solid var(--border);
-	background: linear-gradient(135deg, rgba(13, 110, 253, 0.12), rgba(99, 102, 241, 0.08));
+	background: linear-gradient(135deg, rgba(13, 110, 253, 0.14), rgba(2, 132, 199, 0.1));
 }
 
 .create-item-modal__header .modal-title {
@@ -16,36 +16,78 @@
 	letter-spacing: -0.02em;
 }
 
+.create-item-modal .btn-close {
+	transition: transform 0.2s ease-in-out;
+}
+
+.create-item-modal .btn-close:hover {
+	transform: scale(1.08);
+}
+
 .create-item-modal__tabs .nav-tabs {
 	border-bottom: 1px solid var(--border);
+	gap: 8px;
 }
 
 .create-item-modal__tabs .nav-link {
 	border-radius: 999px;
 	font-weight: 800;
-	padding: 8px 14px;
+	padding: 8px 16px;
 	color: var(--muted);
+	border: 1px solid transparent;
+	transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.create-item-modal__tabs .nav-link:hover {
+	color: #0d6efd;
+	background: rgba(13, 110, 253, 0.08);
+	border-color: rgba(13, 110, 253, 0.2);
+	transform: translateY(-1px);
 }
 
 .create-item-modal__tabs .nav-link.active {
 	color: var(--text);
 	background: rgba(13, 110, 253, 0.12);
 	border-color: rgba(13, 110, 253, 0.25);
+	box-shadow: 0 8px 16px rgba(13, 110, 253, 0.14);
 }
 
 .create-item-modal .form-control,
 .create-item-modal .form-select {
 	border-radius: 12px !important;
 	border: 1px solid rgba(15, 23, 42, 0.14) !important;
+	transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.create-item-modal .form-control:hover,
+.create-item-modal .form-select:hover {
+	border-color: rgba(13, 110, 253, 0.35) !important;
+	background-color: #fbfdff;
 }
 
 .create-item-modal .form-control:focus,
 .create-item-modal .form-select:focus {
 	border-color: rgba(13, 110, 253, 0.55) !important;
-	box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1) !important;
+	box-shadow: 0 0 0 0.23rem rgba(13, 110, 253, 0.12) !important;
 }
 
 .create-item-modal .btn-primary {
 	border-radius: 999px !important;
 	font-weight: 900;
+	padding-inline: 1rem;
+	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s ease-in-out;
+}
+
+.create-item-modal .btn-primary:hover {
+	transform: translateY(-2px);
+	filter: saturate(1.05);
+	box-shadow: 0 14px 24px rgba(13, 110, 253, 0.24);
+}
+
+.create-item-modal .btn-primary:active {
+	transform: translateY(0);
+}
+
+.create-item-modal .btn-primary:focus-visible {
+	box-shadow: 0 0 0 0.22rem rgba(13, 110, 253, 0.16), 0 14px 24px rgba(13, 110, 253, 0.2);
 }

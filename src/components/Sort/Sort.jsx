@@ -6,9 +6,9 @@ import './Sort.css';
 
 const Sort = ({ currentSort, onSortChange }) => {
   return (
-    <div className="sort-container">
-      <Form.Group controlId="taskSortSelect">
-        <Form.Label className="sort-label d-flex align-items-center gap-2"><FaSort /> Trier par :</Form.Label>
+    <section className="sort-container" aria-labelledby="sort-legend">
+      <fieldset className="sort-fieldset">
+        <legend id="sort-legend" className="sort-label d-flex align-items-center gap-2"><FaSort /> Trier par :</legend>
         <Form.Select 
           value={currentSort} 
           onChange={(e) => onSortChange(e.target.value)}
@@ -20,8 +20,8 @@ const Sort = ({ currentSort, onSortChange }) => {
           <option value="name_asc">Nom de la tâche (A-Z)</option>
           <option value="date_creation_desc">Date de création (Plus récente)</option>
         </Form.Select>
-      </Form.Group>
-    </div>
+      </fieldset>
+    </section>
   );
 };
 

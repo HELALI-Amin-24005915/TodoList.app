@@ -7,7 +7,15 @@ import { FaPen, FaXmark, FaFloppyDisk } from 'react-icons/fa6';
 import './Task.css';
 
 const Task = ({ data }) => {
-    const { updateTask, deleteTask, getFoldersByTask } = useContext(TodoContext);
+    const {
+        updateTask,
+        deleteTask,
+        getFoldersByTask,
+        folders,
+        addTaskToFolder,
+        removeTaskFromFolder,
+        selectFolderAndGoToTasks,
+    } = useContext(TodoContext);
     const [isExpanded, setIsExpanded] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editTitle, setEditTitle] = useState(data.title || '');
@@ -76,9 +84,13 @@ const Task = ({ data }) => {
         }
     };
 
+    const handleFolderBadgeActivation = (folderId) => {
+        selectFolderAndGoToTasks(folderId);
+    };
+
     return (
         <div className={`task-card border-start border-4 border-primary ${isExpanded ? 'is-expanded' : ''}`}>
-            <div className="d-flex justify-content-between align-items-center mb-2">
+            <div className="task-header d-flex justify-content-between align-items-center mb-2">
                 <h5 className="m-0 text-dark d-flex align-items-center gap-2">
                     <button
                         type="button"
@@ -90,14 +102,24 @@ const Task = ({ data }) => {
                     </button>
                     {data.title}
                 </h5>
-                <span className="text-muted small">Échéance : {data.date_echeance}</span>
+                <span className="text-muted small task-deadline">Échéance : {data.date_echeance}</span>
             </div>
 
             <div className="d-flex flex-wrap gap-2 mb-2">
                 {taskFolders.slice(0, 2).map(folder => (
                     <span
                         key={folder.id}
-                        className={`badge border folder-badge ${getFolderBadgeClass(folder.color)}`}
+                        className={`badge border folder-badge folder-badge-clickable ${getFolderBadgeClass(folder.color)}`}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => handleFolderBadgeActivation(folder.id)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                handleFolderBadgeActivation(folder.id);
+                            }
+                        }}
+                        aria-label={`Filtrer sur le dossier ${folder.title}`}
                     >
                         {folder.title}
                     </span>
@@ -167,6 +189,42 @@ const Task = ({ data }) => {
                                     placeholder="Ex: Paul, Bob"
                                 />
                             </div>
+
+                            <div className="mt-3">
+                                <label className="form-label small fw-bold">Dossiers associés</label>
+                                <div className="d-flex flex-column gap-1">
+                                    {folders.length > 0 ? (
+                                        folders.map((folder) => {
+                                            const isChecked = taskFolders.some((f) => f.id === folder.id);
+                                            return (
+                                                <div key={folder.id} className="form-check">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        id={`task-${data.id}-folder-${folder.id}`}
+                                                        checked={isChecked}
+                                                        onChange={(e) => {
+                                                            if (e.target.checked) {
+                                                                addTaskToFolder(data.id, folder.id);
+                                                            } else {
+                                                                removeTaskFromFolder(data.id, folder.id);
+                                                            }
+                                                        }}
+                                                    />
+                                                    <label
+                                                        className="form-check-label small"
+                                                        htmlFor={`task-${data.id}-folder-${folder.id}`}
+                                                    >
+                                                        {folder.title}
+                                                    </label>
+                                                </div>
+                                            );
+                                        })
+                                    ) : (
+                                        <div className="text-muted small">Aucun dossier disponible.</div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     )}
 
@@ -184,21 +242,31 @@ const Task = ({ data }) => {
                         {taskFolders.map(folder => (
                             <span
                                 key={`full-${folder.id}`}
-                                className={`badge border folder-badge ${getFolderBadgeClass(folder.color)}`}
+                                className={`badge border folder-badge folder-badge-clickable ${getFolderBadgeClass(folder.color)}`}
+                                role="button"
+                                tabIndex={0}
+                                onClick={() => handleFolderBadgeActivation(folder.id)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        handleFolderBadgeActivation(folder.id);
+                                    }
+                                }}
+                                aria-label={`Filtrer sur le dossier ${folder.title}`}
                             >
                                 {folder.title}
                             </span>
                         ))}
                     </div>
 
-                    <div className="d-flex justify-content-between align-items-center mb-3">
+                    <div className="task-meta-row d-flex justify-content-between align-items-center mb-3">
                         <span className={`etat-badge ${getEtatBadgeClass(data.etat)}`}>{data.etat}</span>
                         <span className={getPriorityBadgeClass(data.priorite)}>
                             Priorité : {data.priorite}
                         </span>
                     </div>
 
-                    <div className="d-flex gap-2 border-top pt-3 mt-2 task-actions">
+                    <div className={`d-flex gap-2 border-top pt-3 mt-2 task-actions ${isEditing ? 'is-editing' : ''} ${data.etat !== ETATS.REUSSI ? 'has-complete' : 'without-complete'}`}>
                         {!isEditing && data.etat !== ETATS.REUSSI && (
                             <button 
                                 className="btn btn-sm btn-success flex-grow-1 d-flex align-items-center justify-content-center gap-2"
