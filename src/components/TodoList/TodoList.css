@@ -32,6 +32,59 @@
 	margin-bottom: 6px;
 }
 
+.task-search-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.task-search-label {
+	font-size: 0.78rem;
+	font-weight: 800;
+	color: #64748b;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.task-search-input-group {
+	display: flex;
+	align-items: center;
+	border: 1px solid rgba(15, 23, 42, 0.14);
+	border-radius: 12px;
+	background: #ffffff;
+	overflow: hidden;
+	transition: border-color 0.22s ease-in-out, box-shadow 0.22s ease-in-out;
+}
+
+.task-search-input-group:focus-within {
+	border-color: rgba(13, 110, 253, 0.55);
+	box-shadow: 0 0 0 0.23rem rgba(13, 110, 253, 0.12);
+}
+
+.task-search-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 42px;
+	color: #0d6efd;
+	background: #f8fbff;
+	border-right: 1px solid rgba(15, 23, 42, 0.08);
+	height: 100%;
+}
+
+.task-search-input {
+	border: 0;
+	border-radius: 0;
+	box-shadow: none !important;
+	font-weight: 600;
+	min-height: 42px;
+}
+
+.task-search-input::placeholder {
+	color: #94a3b8;
+	font-weight: 500;
+}
+
 .tasks-container {
 	margin-top: 14px;
 	display: grid;
@@ -75,6 +128,19 @@
 @media (max-width: 576px) {
 	.todo-controls {
 		padding: 10px !important;
+	}
+
+	.task-search-label {
+		font-size: 0.74rem;
+	}
+
+	.task-search-icon {
+		width: 38px;
+	}
+
+	.task-search-input {
+		min-height: 38px;
+		font-size: 0.92rem;
 	}
 
 	.todo-list h2 {

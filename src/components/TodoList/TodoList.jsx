@@ -4,6 +4,7 @@
  */
 import React, { useContext, useMemo, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
 import { TodoContext } from '../../contexts/TodoContext';
 import { ETATS, ETAT_TERMINE } from '../../utils/constants';
 import Task from '../Task/Task';
@@ -39,10 +40,12 @@ const TodoList = () => {
     );
     const [hideOverdue7Plus, setHideOverdue7Plus] = useState(false);
     const [sortBy, setSortBy] = useState('date_echeance_desc');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const tachesAffichees = useMemo(() => {
         const selectedStatusSet = new Set(selectedStatuses);
         const selectedFolderSet = new Set(selectedFolderIds.map((id) => Number(id)));
+        const normalizedSearch = searchTerm.trim().toLowerCase();
 
         const folderIdsByTask = new Map();
         relations.forEach((relation) => {
@@ -79,6 +82,21 @@ const TodoList = () => {
 
                 const overdueDays = Math.floor((now - dueDate) / DAY_IN_MS);
                 return overdueDays <= 7;
+            })
+            .filter((tache) => {
+                if (!normalizedSearch) return true;
+
+                const titleText = (tache.title || '').toLowerCase();
+                const descriptionText = (tache.description || '').toLowerCase();
+                const equipiersText = Array.isArray(tache.equipiers)
+                    ? tache.equipiers.join(' ').toLowerCase()
+                    : '';
+
+                return (
+                    titleText.includes(normalizedSearch)
+                    || descriptionText.includes(normalizedSearch)
+                    || equipiersText.includes(normalizedSearch)
+                );
             });
 
         return filtered.sort((a, b) => {
@@ -97,6 +115,7 @@ const TodoList = () => {
         selectedStatuses,
         hideOverdue7Plus,
         sortBy,
+        searchTerm,
     ]);
 
     const handleToggleStatus = (status) => {
@@ -123,6 +142,23 @@ const TodoList = () => {
             </header>
 
             <section className="todo-controls p-3 rounded mb-4 shadow-sm mt-3" aria-label="Tri et filtres">
+                <div className="task-search-wrap mb-3" role="search" aria-label="Recherche de tâches">
+                    <label htmlFor="task-search-input" className="task-search-label">Recherche</label>
+                    <div className="task-search-input-group">
+                        <span className="task-search-icon" aria-hidden="true">
+                            <FaMagnifyingGlass />
+                        </span>
+                        <input
+                            id="task-search-input"
+                            type="search"
+                            className="form-control task-search-input"
+                            placeholder="Rechercher par titre, description ou équipier"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                </div>
+
                 <Row className="g-3">
                     <Col xs={12} lg={3}>
                         <Sort currentSort={sortBy} onSortChange={setSortBy} />
