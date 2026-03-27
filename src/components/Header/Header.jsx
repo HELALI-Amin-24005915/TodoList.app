@@ -31,6 +31,7 @@ const Header = ({ onCreateTask, onCreateFolder }) => {
     goToTasksView,
     goToFoldersView,
     resetFromBackup,
+    clearAllData,
   } = useContext(TodoContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
@@ -51,6 +52,12 @@ const Header = ({ onCreateTask, onCreateFolder }) => {
 
   const handleResetAll = () => {
     resetFromBackup();
+    setIsResetModalOpen(false);
+    setIsMenuOpen(false);
+  };
+
+  const handleClearAll = () => {
+    clearAllData();
     setIsResetModalOpen(false);
     setIsMenuOpen(false);
   };
@@ -202,19 +209,22 @@ const Header = ({ onCreateTask, onCreateFolder }) => {
         className="header-reset-modal"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Reinitialiser les donnees</Modal.Title>
+          <Modal.Title>Gestion des donnees au demarrage</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Voulez-vous reinitialiser les taches, dossiers et relations des le lancement ?
+          Choisissez une action pour les taches, dossiers et relations.
           <br />
-          <span className="text-muted">Si vous confirmez, les donnees seront rechargees depuis la sauvegarde initiale.</span>
+          <span className="text-muted">Continuer conserve vos donnees existantes. Reinitialiser recharge les donnees de base du projet. Tout supprimer efface absolument tout.</span>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="outline-secondary" onClick={closeResetModal}>
-            Non, continuer
+            Continuer
           </Button>
-          <Button variant="danger" onClick={handleResetAll}>
-            Oui, reinitialiser
+          <Button variant="primary" onClick={handleResetAll}>
+            Reinitialiser base
+          </Button>
+          <Button variant="danger" onClick={handleClearAll}>
+            Tout supprimer
           </Button>
         </Modal.Footer>
       </Modal>

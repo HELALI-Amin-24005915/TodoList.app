@@ -14,6 +14,9 @@ export const TodoContext = createContext();
 const DEFAULT_VIEW = 'tasks';
 const DEFAULT_FOLDER_FILTER = 'ALL';
 const DEFAULT_FOLDER_FILTER_MODE = 'ALL';
+const STORAGE_TASKS_KEY = 'todo_app_tasks';
+const STORAGE_FOLDERS_KEY = 'todo_app_folders';
+const STORAGE_RELATIONS_KEY = 'todo_app_relations';
 
 /**
  * Provider exposing the global Todo domain state and all mutation helpers.
@@ -43,9 +46,76 @@ export const TodoProvider = ({ children }) => {
     const getInitialFolders = () => (backupData.dossiers || []).map((f) => ({ ...f }));
     const getInitialRelations = () => (backupData.relations || []).map((r) => ({ ...r }));
 
-    const [tasks, setTasks] = useState(getInitialTasks);
-    const [folders, setFolders] = useState(getInitialFolders);
-    const [relations, setRelations] = useState(getInitialRelations);
+    const readStoredArray = (key) => {
+        try {
+            const raw = localStorage.getItem(key);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : null;
+        } catch (error) {
+            return null;
+        }
+    };
+
+    const persistData = (nextTasks, nextFolders, nextRelations) => {
+        try {
+            localStorage.setItem(STORAGE_TASKS_KEY, JSON.stringify(nextTasks));
+            localStorage.setItem(STORAGE_FOLDERS_KEY, JSON.stringify(nextFolders));
+            localStorage.setItem(STORAGE_RELATIONS_KEY, JSON.stringify(nextRelations));
+        } catch (error) {
+            // Ignore persistence errors (e.g. private mode quota restrictions)
+        }
+    };
+
+    const sanitizeRelations = (relationItems, taskItems, folderItems) => {
+        const taskIdSet = new Set(taskItems.map((task) => task.id));
+        const folderIdSet = new Set(folderItems.map((folder) => folder.id));
+
+        return relationItems.filter((relation) =>
+            taskIdSet.has(relation.tache) && folderIdSet.has(relation.dossier)
+        );
+    };
+
+    const getBootstrappedData = () => {
+        const storedTasks = readStoredArray(STORAGE_TASKS_KEY);
+        const storedFolders = readStoredArray(STORAGE_FOLDERS_KEY);
+        const storedRelations = readStoredArray(STORAGE_RELATIONS_KEY);
+
+        if (!storedTasks || !storedFolders || !storedRelations) {
+            return {
+                tasks: getInitialTasks(),
+                folders: getInitialFolders(),
+                relations: getInitialRelations(),
+            };
+        }
+
+        const normalizedTasks = storedTasks.map((task) => ({
+            ...task,
+            equipiers: normalizeEquipiers(task.equipiers),
+        }));
+        const normalizedFolders = storedFolders.map((folder) => ({ ...folder }));
+        const normalizedRelations = sanitizeRelations(
+            storedRelations.map((relation) => ({
+                ...relation,
+                tache: Number(relation.tache),
+                dossier: Number(relation.dossier),
+            })),
+            normalizedTasks,
+            normalizedFolders
+        );
+
+        return {
+            tasks: normalizedTasks,
+            folders: normalizedFolders,
+            relations: normalizedRelations,
+        };
+    };
+
+    const bootstrappedData = getBootstrappedData();
+
+    const [tasks, setTasks] = useState(bootstrappedData.tasks);
+    const [folders, setFolders] = useState(bootstrappedData.folders);
+    const [relations, setRelations] = useState(bootstrappedData.relations);
     const [currentView, setCurrentView] = useState(DEFAULT_VIEW);
     const [folderFilterMode, setFolderFilterMode] = useState(DEFAULT_FOLDER_FILTER_MODE);
     const [selectedFolderIds, setSelectedFolderIds] = useState([]);
@@ -151,25 +221,40 @@ export const TodoProvider = ({ children }) => {
                 ...newFolder, 
                 id: Date.now() 
             };
-            setFolders((prev) => [...prev, folderWithId]);
+            setFolders((prev) => {
+                const nextFolders = [...prev, folderWithId];
+                persistData(tasks, nextFolders, relations);
+                return nextFolders;
+            });
             return true;
         }
         return false;
     };
 
     const deleteFolder = (id) => {
-        setFolders((prev) => prev.filter((f) => f.id !== id));
-        setTasks((prev) => prev.filter((t) => t.folderId !== id));
-        setRelations((prev) => prev.filter((r) => r.dossier !== id));
+        const normalizedId = Number(id);
+        const nextFolders = folders.filter((folder) => folder.id !== normalizedId);
+        const nextTasks = tasks.filter((task) => task.folderId !== normalizedId);
+        const nextRelations = relations.filter((relation) => relation.dossier !== normalizedId);
+
+        setFolders(nextFolders);
+        setTasks(nextTasks);
+        setRelations(nextRelations);
+        persistData(nextTasks, nextFolders, nextRelations);
+
         setSelectedFolderIds((prev) => {
-            const next = prev.filter((folderId) => folderId !== Number(id));
+            const next = prev.filter((folderId) => folderId !== normalizedId);
             setFolderFilterMode(next.length > 0 || includeNoFolder ? 'CUSTOM' : 'ALL');
             return next;
         });
     };
 
     const updateFolder = (id, updatedFields) => {
-        setFolders((prev) => prev.map((f) => (f.id === id ? { ...f, ...updatedFields } : f)));
+        const nextFolders = folders.map((folder) => (
+            folder.id === id ? { ...folder, ...updatedFields } : folder
+        ));
+        setFolders(nextFolders);
+        persistData(tasks, nextFolders, relations);
     };
 
     const addTask = (newTask) => {
@@ -179,22 +264,33 @@ export const TodoProvider = ({ children }) => {
             equipiers: normalizeEquipiers(taskData.equipiers),
             id: Date.now() 
         };
-        setTasks((prev) => [...prev, taskWithId]);
+        const nextTasks = [...tasks, taskWithId];
+        let nextRelations = relations;
 
         if (folderId !== null && folderId !== undefined) {
-            setRelations((prev) => [...prev, { tache: taskWithId.id, dossier: Number(folderId) }]);
+            nextRelations = [...relations, { tache: taskWithId.id, dossier: Number(folderId) }];
         }
+
+        setTasks(nextTasks);
+        setRelations(nextRelations);
+        persistData(nextTasks, folders, nextRelations);
     };
 
     const updateTask = (id, updatedFields) => {
-        setTasks((prev) =>
-            prev.map((task) => (task.id === id ? { ...task, ...updatedFields } : task))
-        );
+        const nextTasks = tasks.map((task) => (
+            task.id === id ? { ...task, ...updatedFields } : task
+        ));
+        setTasks(nextTasks);
+        persistData(nextTasks, folders, relations);
     };
 
     const deleteTask = (taskId) => {
-        setTasks((prev) => prev.filter((t) => t.id !== taskId));
-        setRelations((prev) => prev.filter((r) => r.tache !== taskId)); 
+        const nextTasks = tasks.filter((task) => task.id !== taskId);
+        const nextRelations = relations.filter((relation) => relation.tache !== taskId);
+
+        setTasks(nextTasks);
+        setRelations(nextRelations);
+        persistData(nextTasks, folders, nextRelations);
     };
 
     const addTaskToFolder = (taskId, folderId) => {
@@ -204,15 +300,22 @@ export const TodoProvider = ({ children }) => {
                 (r) => r.tache === taskId && r.dossier === normalizedFolderId
             );
             if (alreadyExists) return prev;
-            return [...prev, { tache: taskId, dossier: normalizedFolderId }];
+
+            const nextRelations = [...prev, { tache: taskId, dossier: normalizedFolderId }];
+            persistData(tasks, folders, nextRelations);
+            return nextRelations;
         });
     };
 
     const removeTaskFromFolder = (taskId, folderId) => {
         const normalizedFolderId = Number(folderId);
-        setRelations((prev) =>
-            prev.filter((r) => !(r.tache === taskId && r.dossier === normalizedFolderId))
-        );
+        setRelations((prev) => {
+            const nextRelations = prev.filter(
+                (relation) => !(relation.tache === taskId && relation.dossier === normalizedFolderId)
+            );
+            persistData(tasks, folders, nextRelations);
+            return nextRelations;
+        });
     };
 
     const getTasksByFolder = (folderId) => {
@@ -232,13 +335,33 @@ export const TodoProvider = ({ children }) => {
     };
 
     const resetFromBackup = () => {
-        setTasks(getInitialTasks());
-        setFolders(getInitialFolders());
-        setRelations(getInitialRelations());
+        const nextTasks = getInitialTasks();
+        const nextFolders = getInitialFolders();
+        const nextRelations = getInitialRelations();
+
+        setTasks(nextTasks);
+        setFolders(nextFolders);
+        setRelations(nextRelations);
         setCurrentView(DEFAULT_VIEW);
         setFolderFilterMode(DEFAULT_FOLDER_FILTER_MODE);
         setSelectedFolderIds([]);
         setIncludeNoFolder(false);
+        persistData(nextTasks, nextFolders, nextRelations);
+    };
+
+    const clearAllData = () => {
+        const nextTasks = [];
+        const nextFolders = [];
+        const nextRelations = [];
+
+        setTasks(nextTasks);
+        setFolders(nextFolders);
+        setRelations(nextRelations);
+        setCurrentView(DEFAULT_VIEW);
+        setFolderFilterMode(DEFAULT_FOLDER_FILTER_MODE);
+        setSelectedFolderIds([]);
+        setIncludeNoFolder(false);
+        persistData(nextTasks, nextFolders, nextRelations);
     };
 
 
@@ -262,6 +385,7 @@ export const TodoProvider = ({ children }) => {
         selectFolderAndGoToTasks,
         clearActiveFolderFilter,
         resetFromBackup,
+        clearAllData,
         addFolder,
         deleteFolder,
         updateFolder,
