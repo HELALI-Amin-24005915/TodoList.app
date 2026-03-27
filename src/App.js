@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Root composition module for the Todo application.
+ * It wires global providers, high-level layout regions, and top-level feature views.
+ */
 import React, { useContext, useState } from 'react';
 import './App.css';
 import { TodoContext, TodoProvider } from './contexts/TodoContext';
@@ -7,6 +11,12 @@ import FolderManager from './components/FolderManager/FolderManager';
 import Footer from './components/Footer/Footer';
 import CreateItemModal from './components/CreateItemModal/CreateItemModal';
 
+/**
+ * Main application content rendered inside the global provider.
+ * It handles view switching and shared create modal orchestration.
+ *
+ * @returns {JSX.Element} The application shell.
+ */
 function AppContent() {
   const { currentView } = useContext(TodoContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,6 +49,12 @@ function AppContent() {
   );
 }
 
+/**
+ * Root application component.
+ * Wraps the complete UI in the Todo context provider.
+ *
+ * @returns {JSX.Element} The context-enabled app.
+ */
 function App() {
   return (
     <TodoProvider>

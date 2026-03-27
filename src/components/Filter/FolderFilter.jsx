@@ -1,8 +1,25 @@
+/**
+ * @fileoverview Folder filtering controls for the task list.
+ * Supports multi-folder selection, no-folder inclusion, and single-folder shortcuts.
+ */
 import React, { useContext } from 'react';
 import { Form } from 'react-bootstrap';
 import { FaFolderOpen } from 'react-icons/fa';
 import { TodoContext } from '../../contexts/TodoContext';
 
+/**
+ * Folder filter panel supporting multi-select and "only this folder" shortcut.
+ *
+ * @param {Object} props - Component props.
+ * @param {'ALL'|'CUSTOM'} props.folderFilterMode - Current folder filter mode.
+ * @param {number[]} props.selectedFolderIds - Selected folder ids.
+ * @param {boolean} props.includeNoFolder - Whether tasks without folders are included.
+ * @param {function(): void} props.onShowAllFolders - Clears folder filtering.
+ * @param {function(number): void} props.onToggleFolder - Toggles one folder selection.
+ * @param {function(): void} props.onToggleIncludeNoFolder - Toggles "no folder" filtering.
+ * @param {function(number): void} props.onSelectSingleFolder - Filters to a single folder.
+ * @returns {JSX.Element} Folder filter UI.
+ */
 const FolderFilter = ({
   folderFilterMode,
   selectedFolderIds,

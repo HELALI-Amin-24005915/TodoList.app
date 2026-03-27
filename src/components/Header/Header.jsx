@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Header module for global navigation and status analytics.
+ * It renders task counters, a doughnut summary chart, mobile actions,
+ * and startup reset confirmation.
+ */
 import React, { useContext, useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
@@ -9,6 +14,15 @@ import './Header.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+/**
+ * Top header component displaying statistics, view navigation,
+ * mobile off-canvas actions, and startup reset modal.
+ *
+ * @param {Object} props - Component props.
+ * @param {function(): void} props.onCreateTask - Opens task creation flow.
+ * @param {function(): void} props.onCreateFolder - Opens folder creation flow.
+ * @returns {JSX.Element} Header UI.
+ */
 const Header = ({ onCreateTask, onCreateFolder }) => {
   // get tasks from context to calculate stats for the header
   const {
@@ -57,11 +71,11 @@ const Header = ({ onCreateTask, onCreateFolder }) => {
       {
         data: Object.values(statusCounts),
         backgroundColor: [
-          '#36A2EB', // new (Blue)
-          '#FFCE56', // in progress (Yellow)
-          '#4BC0C0', // successful (Teal)
-          '#FF6384', // abandoned (Red)
-          '#9966FF'  // pending (Purple)
+          '#36A2EB', 
+          '#FFCE56', 
+          '#4BC0C0', 
+          '#FF6384', 
+          '#9966FF' 
         ],
         borderWidth: 1,
       },

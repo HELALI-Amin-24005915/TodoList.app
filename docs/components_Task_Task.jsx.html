@@ -1,4 +1,95 @@
-/**
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> components/Task/Task.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AppContent">AppContent</a></li><li><a href="global.html#CreateItemModal">CreateItemModal</a></li><li><a href="global.html#ETATS">ETATS</a></li><li><a href="global.html#ETAT_TERMINE">ETAT_TERMINE</a></li><li><a href="global.html#Filter">Filter</a></li><li><a href="global.html#FolderFilter">FolderFilter</a></li><li><a href="global.html#FolderManager">FolderManager</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Sort">Sort</a></li><li><a href="global.html#Task">Task</a></li><li><a href="global.html#TodoContext">TodoContext</a></li><li><a href="global.html#TodoList">TodoList</a></li><li><a href="global.html#TodoProvider">TodoProvider</a></li><li><a href="global.html#root">root</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/Task/Task.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @fileoverview Task card presentation and interactions.
  * Implements expand/collapse behavior, inline editing, state transitions,
  * deletion, and folder linking controls.
@@ -102,25 +193,25 @@ const Task = ({ data }) => {
     };
 
     return (
-        <div className={`task-card border-start border-4 border-primary ${isExpanded ? 'is-expanded' : ''}`}>
-            <div className="task-header d-flex justify-content-between align-items-center mb-2">
-                <h5 className="m-0 text-dark d-flex align-items-center gap-2">
-                    <button
+        &lt;div className={`task-card border-start border-4 border-primary ${isExpanded ? 'is-expanded' : ''}`}>
+            &lt;div className="task-header d-flex justify-content-between align-items-center mb-2">
+                &lt;h5 className="m-0 text-dark d-flex align-items-center gap-2">
+                    &lt;button
                         type="button"
                         className="btn btn-sm btn-link p-0 text-decoration-none"
                         onClick={() => setIsExpanded(!isExpanded)}
                         aria-label={isExpanded ? 'Réduire la tâche' : 'Développer la tâche'}
                     >
-                        {isExpanded ? <FaCaretDown /> : <FaCaretRight />}
-                    </button>
+                        {isExpanded ? &lt;FaCaretDown /> : &lt;FaCaretRight />}
+                    &lt;/button>
                     {data.title}
-                </h5>
-                <span className="text-muted small task-deadline">Échéance : {data.date_echeance}</span>
-            </div>
+                &lt;/h5>
+                &lt;span className="text-muted small task-deadline">Échéance : {data.date_echeance}&lt;/span>
+            &lt;/div>
 
-            <div className="d-flex flex-wrap gap-2 mb-2">
+            &lt;div className="d-flex flex-wrap gap-2 mb-2">
                 {taskFolders.slice(0, 2).map(folder => (
-                    <span
+                    &lt;span
                         key={folder.id}
                         className={`badge border folder-badge folder-badge-clickable ${getFolderBadgeClass(folder.color)}`}
                         role="button"
@@ -135,83 +226,83 @@ const Task = ({ data }) => {
                         aria-label={`Filtrer sur le dossier ${folder.title}`}
                     >
                         {folder.title}
-                    </span>
+                    &lt;/span>
                 ))}
-            </div>
+            &lt;/div>
 
-            {isExpanded && (
-                <div className="task-expanded">
+            {isExpanded &amp;&amp; (
+                &lt;div className="task-expanded">
                     {!isEditing ? (
-                        <p className="text-muted small mb-2">{data.description}</p>
+                        &lt;p className="text-muted small mb-2">{data.description}&lt;/p>
                     ) : (
-                        <div className="task-edit">
-                            <div className="mb-2">
-                                <label className="form-label small fw-bold">Titre *</label>
-                                <input
+                        &lt;div className="task-edit">
+                            &lt;div className="mb-2">
+                                &lt;label className="form-label small fw-bold">Titre *&lt;/label>
+                                &lt;input
                                     className="form-control form-control-sm"
                                     value={editTitle}
                                     onChange={(e) => setEditTitle(e.target.value)}
                                     minLength={5}
                                 />
-                            </div>
+                            &lt;/div>
 
-                            <div className="mb-2">
-                                <label className="form-label small fw-bold">Description</label>
-                                <textarea
+                            &lt;div className="mb-2">
+                                &lt;label className="form-label small fw-bold">Description&lt;/label>
+                                &lt;textarea
                                     className="form-control form-control-sm"
                                     value={editDesc}
                                     onChange={(e) => setEditDesc(e.target.value)}
                                     rows={2}
                                 />
-                            </div>
+                            &lt;/div>
 
-                            <div className="row g-2">
-                                <div className="col-6">
-                                    <label className="form-label small fw-bold">Échéance *</label>
-                                    <input
+                            &lt;div className="row g-2">
+                                &lt;div className="col-6">
+                                    &lt;label className="form-label small fw-bold">Échéance *&lt;/label>
+                                    &lt;input
                                         className="form-control form-control-sm"
                                         type="date"
                                         value={editDate}
                                         onChange={(e) => setEditDate(e.target.value)}
                                         required
                                     />
-                                </div>
+                                &lt;/div>
 
-                                <div className="col-6">
-                                    <label className="form-label small fw-bold">Statut</label>
-                                    <select
+                                &lt;div className="col-6">
+                                    &lt;label className="form-label small fw-bold">Statut&lt;/label>
+                                    &lt;select
                                         className="form-select form-select-sm"
                                         value={editEtat}
                                         onChange={(e) => setEditEtat(e.target.value)}
                                     >
-                                        <option value={ETATS.NOUVEAU}>Nouveau</option>
-                                        <option value={ETATS.EN_COURS}>En cours</option>
-                                        <option value={ETATS.EN_ATTENTE}>En attente</option>
-                                        <option value={ETATS.REUSSI}>Réussi</option>
-                                        <option value={ETATS.ABANDONNE}>Abandonné</option>
-                                    </select>
-                                </div>
-                            </div>
+                                        &lt;option value={ETATS.NOUVEAU}>Nouveau&lt;/option>
+                                        &lt;option value={ETATS.EN_COURS}>En cours&lt;/option>
+                                        &lt;option value={ETATS.EN_ATTENTE}>En attente&lt;/option>
+                                        &lt;option value={ETATS.REUSSI}>Réussi&lt;/option>
+                                        &lt;option value={ETATS.ABANDONNE}>Abandonné&lt;/option>
+                                    &lt;/select>
+                                &lt;/div>
+                            &lt;/div>
 
-                            <div className="mt-2">
-                                <label className="form-label small fw-bold">Équipiers (virgules)</label>
-                                <input
+                            &lt;div className="mt-2">
+                                &lt;label className="form-label small fw-bold">Équipiers (virgules)&lt;/label>
+                                &lt;input
                                     className="form-control form-control-sm"
                                     value={editEquipiers}
                                     onChange={(e) => setEditEquipiers(e.target.value)}
                                     placeholder="Ex: Paul, Bob"
                                 />
-                            </div>
+                            &lt;/div>
 
-                            <div className="mt-3">
-                                <label className="form-label small fw-bold">Dossiers associés</label>
-                                <div className="d-flex flex-column gap-1">
+                            &lt;div className="mt-3">
+                                &lt;label className="form-label small fw-bold">Dossiers associés&lt;/label>
+                                &lt;div className="d-flex flex-column gap-1">
                                     {folders.length > 0 ? (
                                         folders.map((folder) => {
                                             const isChecked = taskFolders.some((f) => f.id === folder.id);
                                             return (
-                                                <div key={folder.id} className="form-check">
-                                                    <input
+                                                &lt;div key={folder.id} className="form-check">
+                                                    &lt;input
                                                         className="form-check-input"
                                                         type="checkbox"
                                                         id={`task-${data.id}-folder-${folder.id}`}
@@ -224,36 +315,36 @@ const Task = ({ data }) => {
                                                             }
                                                         }}
                                                     />
-                                                    <label
+                                                    &lt;label
                                                         className="form-check-label small"
                                                         htmlFor={`task-${data.id}-folder-${folder.id}`}
                                                     >
                                                         {folder.title}
-                                                    </label>
-                                                </div>
+                                                    &lt;/label>
+                                                &lt;/div>
                                             );
                                         })
                                     ) : (
-                                        <div className="text-muted small">Aucun dossier disponible.</div>
+                                        &lt;div className="text-muted small">Aucun dossier disponible.&lt;/div>
                                     )}
-                                </div>
-                            </div>
-                        </div>
+                                &lt;/div>
+                            &lt;/div>
+                        &lt;/div>
                     )}
 
-                    {Array.isArray(data.equipiers) && data.equipiers.length > 0 && (
-                        <div className="d-flex flex-wrap gap-2 mb-3">
+                    {Array.isArray(data.equipiers) &amp;&amp; data.equipiers.length > 0 &amp;&amp; (
+                        &lt;div className="d-flex flex-wrap gap-2 mb-3">
                             {data.equipiers.map((name) => (
-                                <span key={name} className="badge text-bg-light border">
+                                &lt;span key={name} className="badge text-bg-light border">
                                     {name}
-                                </span>
+                                &lt;/span>
                             ))}
-                        </div>
+                        &lt;/div>
                     )}
 
-                    <div className="d-flex flex-wrap gap-2 mb-3">
+                    &lt;div className="d-flex flex-wrap gap-2 mb-3">
                         {taskFolders.map(folder => (
-                            <span
+                            &lt;span
                                 key={`full-${folder.id}`}
                                 className={`badge border folder-badge folder-badge-clickable ${getFolderBadgeClass(folder.color)}`}
                                 role="button"
@@ -268,40 +359,40 @@ const Task = ({ data }) => {
                                 aria-label={`Filtrer sur le dossier ${folder.title}`}
                             >
                                 {folder.title}
-                            </span>
+                            &lt;/span>
                         ))}
-                    </div>
+                    &lt;/div>
 
-                    <div className="task-meta-row d-flex justify-content-between align-items-center mb-3">
-                        <span className={`etat-badge ${getEtatBadgeClass(data.etat)}`}>{data.etat}</span>
-                        <span className={getPriorityBadgeClass(data.priorite)}>
+                    &lt;div className="task-meta-row d-flex justify-content-between align-items-center mb-3">
+                        &lt;span className={`etat-badge ${getEtatBadgeClass(data.etat)}`}>{data.etat}&lt;/span>
+                        &lt;span className={getPriorityBadgeClass(data.priorite)}>
                             Priorité : {data.priorite}
-                        </span>
-                    </div>
+                        &lt;/span>
+                    &lt;/div>
 
-                    <div className={`d-flex gap-2 border-top pt-3 mt-2 task-actions ${isEditing ? 'is-editing' : ''} ${data.etat !== ETATS.REUSSI ? 'has-complete' : 'without-complete'}`}>
-                        {!isEditing && data.etat !== ETATS.REUSSI && (
-                            <button 
+                    &lt;div className={`d-flex gap-2 border-top pt-3 mt-2 task-actions ${isEditing ? 'is-editing' : ''} ${data.etat !== ETATS.REUSSI ? 'has-complete' : 'without-complete'}`}>
+                        {!isEditing &amp;&amp; data.etat !== ETATS.REUSSI &amp;&amp; (
+                            &lt;button 
                                 className="btn btn-sm btn-success flex-grow-1 d-flex align-items-center justify-content-center gap-2"
                                 onClick={() => updateTask(data.id, { etat: ETATS.REUSSI })}
                             >
-                                <FaCheck /> Terminer
-                            </button>
+                                &lt;FaCheck /> Terminer
+                            &lt;/button>
                         )}
 
                         {!isEditing ? (
-                            <button
+                            &lt;button
                                 className="btn btn-sm btn-outline-secondary flex-grow-1 d-flex align-items-center justify-content-center gap-2"
                                 onClick={() => setIsEditing(true)}
                             >
-                                <FaPen /> Éditer
-                            </button>
+                                &lt;FaPen /> Éditer
+                            &lt;/button>
                         ) : (
-                            <>
-                                <button
+                            &lt;>
+                                &lt;button
                                     className="btn btn-sm btn-primary flex-grow-1 d-flex align-items-center justify-content-center gap-2"
                                     onClick={() => {
-                                        if (editTitle.trim().length < 5 || !editDate) {
+                                        if (editTitle.trim().length &lt; 5 || !editDate) {
                                             alert("Titre (min 5) et date d'échéance obligatoires.");
                                             return;
                                         }
@@ -318,9 +409,9 @@ const Task = ({ data }) => {
                                         setIsEditing(false);
                                     }}
                                 >
-                                    <FaFloppyDisk /> Enregistrer
-                                </button>
-                                <button
+                                    &lt;FaFloppyDisk /> Enregistrer
+                                &lt;/button>
+                                &lt;button
                                     className="btn btn-sm btn-outline-secondary flex-grow-1 d-flex align-items-center justify-content-center gap-2"
                                     onClick={() => {
                                         setEditTitle(data.title || '');
@@ -331,22 +422,53 @@ const Task = ({ data }) => {
                                         setIsEditing(false);
                                     }}
                                 >
-                                    <FaXmark /> Annuler
-                                </button>
-                            </>
+                                    &lt;FaXmark /> Annuler
+                                &lt;/button>
+                            &lt;/>
                         )}
                         
-                        <button 
+                        &lt;button 
                             className="btn btn-sm btn-outline-danger flex-grow-1 d-flex align-items-center justify-content-center gap-2"
                             onClick={() => deleteTask(data.id)}
                         >
-                            <FaTrash /> Supprimer
-                        </button>
-                    </div>
-                </div>
+                            &lt;FaTrash /> Supprimer
+                        &lt;/button>
+                    &lt;/div>
+                &lt;/div>
             )}
-        </div>
+        &lt;/div>
     );
 };
 
-export default Task;
+export default Task;</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

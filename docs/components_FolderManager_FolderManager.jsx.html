@@ -1,4 +1,95 @@
-/**
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> components/FolderManager/FolderManager.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AppContent">AppContent</a></li><li><a href="global.html#CreateItemModal">CreateItemModal</a></li><li><a href="global.html#ETATS">ETATS</a></li><li><a href="global.html#ETAT_TERMINE">ETAT_TERMINE</a></li><li><a href="global.html#Filter">Filter</a></li><li><a href="global.html#FolderFilter">FolderFilter</a></li><li><a href="global.html#FolderManager">FolderManager</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Sort">Sort</a></li><li><a href="global.html#Task">Task</a></li><li><a href="global.html#TodoContext">TodoContext</a></li><li><a href="global.html#TodoList">TodoList</a></li><li><a href="global.html#TodoProvider">TodoProvider</a></li><li><a href="global.html#root">root</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/FolderManager/FolderManager.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @fileoverview Folder management module.
  * Handles folder display, inline editing workflows, deletion, and quick navigation
  * into tasks filtered by the selected folder.
@@ -119,7 +210,7 @@ const FolderManager = () => {
             return;
         }
 
-        if (editingFolder.title.trim().length < 3) {
+        if (editingFolder.title.trim().length &lt; 3) {
             alert("Le nom du dossier doit faire au moins 3 caractères.");
             return;
         }
@@ -134,134 +225,134 @@ const FolderManager = () => {
     };
 
     return (
-        <div className="folder-manager">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2>Gestion des Dossiers ({folders.length})</h2>
-            </div>
+        &lt;div className="folder-manager">
+            &lt;div className="d-flex justify-content-between align-items-center mb-4">
+                &lt;h2>Gestion des Dossiers ({folders.length})&lt;/h2>
+            &lt;/div>
 
             {folders.length > 0 ? (
-                <div className="row g-3 align-items-start">
+                &lt;div className="row g-3 align-items-start">
                     {folders.map(folder => {
                         const folderTasks = getTasksByFolder(folder.id);
                         const isEditing = editingFolder?.id === folder.id;
                         const isAnyEditing = Boolean(editingFolder?.id);
 
                         return (
-                            <div
+                            &lt;div
                                 key={folder.id} 
                                 className={`col-sm-6 col-lg-4 folder-col`}
                             >
-                                <div
+                                &lt;div
                                     className={`card shadow-sm folder-card ${getFolderCardBorderClass(folder.color)}`}
                                     role="button"
                                     tabIndex={0}
                                     onClick={() => {
-                                        if (!isAnyEditing && !isEditing) {
+                                        if (!isAnyEditing &amp;&amp; !isEditing) {
                                             selectFolderAndGoToTasks(folder.id);
                                         }
                                     }}
                                     onKeyDown={(e) => {
-                                        if ((e.key === 'Enter' || e.key === ' ') && !isAnyEditing && !isEditing) {
+                                        if ((e.key === 'Enter' || e.key === ' ') &amp;&amp; !isAnyEditing &amp;&amp; !isEditing) {
                                             e.preventDefault();
                                             selectFolderAndGoToTasks(folder.id);
                                         }
                                     }}
                                 >
-                                    <div className="card-body">
+                                    &lt;div className="card-body">
                                         {!isEditing ? (
-                                            <>
-                                                <h4
+                                            &lt;>
+                                                &lt;h4
                                                     className={`card-title d-flex align-items-center gap-2 mb-2 ${getFolderTitleColorClass(folder.color)}`}
                                                 >
-                                                    <FaFolderOpen /> {folder.title}
-                                                </h4>
+                                                    &lt;FaFolderOpen /> {folder.title}
+                                                &lt;/h4>
 
                                                 {folder.description ? (
-                                                    <p className="text-muted small mb-2">{folder.description}</p>
+                                                    &lt;p className="text-muted small mb-2">{folder.description}&lt;/p>
                                                 ) : null}
-                                            </>
+                                            &lt;/>
                                         ) : (
-                                            <div className="folder-edit">
-                                                <div className="mb-2">
-                                                    <label className="form-label small fw-bold">Nom *</label>
-                                                    <input
+                                            &lt;div className="folder-edit">
+                                                &lt;div className="mb-2">
+                                                    &lt;label className="form-label small fw-bold">Nom *&lt;/label>
+                                                    &lt;input
                                                         className="form-control form-control-sm"
                                                         value={editingFolder?.title || ''}
                                                         onChange={(e) => handleEditFieldChange('title', e.target.value)}
                                                         minLength={3}
                                                         onClick={(e) => e.stopPropagation()}
                                                     />
-                                                </div>
+                                                &lt;/div>
 
-                                                <div className="mb-2">
-                                                    <label className="form-label small fw-bold">Description</label>
-                                                    <textarea
+                                                &lt;div className="mb-2">
+                                                    &lt;label className="form-label small fw-bold">Description&lt;/label>
+                                                    &lt;textarea
                                                         className="form-control form-control-sm"
                                                         value={editingFolder?.description || ''}
                                                         onChange={(e) => handleEditFieldChange('description', e.target.value)}
                                                         rows={2}
                                                         onClick={(e) => e.stopPropagation()}
                                                     />
-                                                </div>
+                                                &lt;/div>
 
-                                                <div className="mb-2">
-                                                    <label className="form-label small fw-bold">Couleur</label>
-                                                    <select
+                                                &lt;div className="mb-2">
+                                                    &lt;label className="form-label small fw-bold">Couleur&lt;/label>
+                                                    &lt;select
                                                         className="form-select form-select-sm"
                                                         value={editingFolder?.color || 'bluesky'}
                                                         onChange={(e) => handleEditFieldChange('color', e.target.value)}
                                                         onClick={(e) => e.stopPropagation()}
                                                     >
                                                         {colorOptions.map((c) => (
-                                                            <option key={c.value} value={c.value}>
+                                                            &lt;option key={c.value} value={c.value}>
                                                                 {c.label}
-                                                            </option>
+                                                            &lt;/option>
                                                         ))}
-                                                    </select>
-                                                </div>
-                                            </div>
+                                                    &lt;/select>
+                                                &lt;/div>
+                                            &lt;/div>
                                         )}
                                         
-                                        <p className="card-text text-muted mb-0 d-flex align-items-center gap-2">
-                                            <FaListUl /> 
+                                        &lt;p className="card-text text-muted mb-0 d-flex align-items-center gap-2">
+                                            &lt;FaListUl /> 
                                             {folderTasks.length} tâche(s) associée(s)
-                                        </p>
-                                    </div>
-                                    <div className="card-footer bg-transparent border-0">
-                                        <div className="folder-actions-group">
+                                        &lt;/p>
+                                    &lt;/div>
+                                    &lt;div className="card-footer bg-transparent border-0">
+                                        &lt;div className="folder-actions-group">
                                             {!isEditing ? (
-                                                <button
+                                                &lt;button
                                                     className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         startEdit(folder);
                                                     }}
                                                 >
-                                                    <FaPen /> Modifier
-                                                </button>
+                                                    &lt;FaPen /> Modifier
+                                                &lt;/button>
                                             ) : (
-                                                <>
-                                                    <button
+                                                &lt;>
+                                                    &lt;button
                                                         className="btn btn-primary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
                                                         onClick={(e) => {
                                                             e.stopPropagation();
                                                             saveEdit();
                                                         }}
                                                     >
-                                                        <FaFloppyDisk /> Enregistrer
-                                                    </button>
-                                                    <button
+                                                        &lt;FaFloppyDisk /> Enregistrer
+                                                    &lt;/button>
+                                                    &lt;button
                                                         className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-2"
                                                         onClick={(e) => {
                                                             e.stopPropagation();
                                                             cancelEdit();
                                                         }}
                                                     >
-                                                        <FaXmark /> Annuler
-                                                    </button>
-                                                </>
+                                                        &lt;FaXmark /> Annuler
+                                                    &lt;/button>
+                                                &lt;/>
                                             )}
-                                            <button 
+                                            &lt;button 
                                                 className="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-2"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
@@ -270,22 +361,53 @@ const FolderManager = () => {
                                                     }
                                                 }}
                                             >
-                                                <FaTrash /> Supprimer
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                                &lt;FaTrash /> Supprimer
+                                            &lt;/button>
+                                        &lt;/div>
+                                    &lt;/div>
+                                &lt;/div>
+                            &lt;/div>
                         );
                     })}
-                </div>
+                &lt;/div>
             ) : (
-                <div className="alert alert-info shadow-sm">
+                &lt;div className="alert alert-info shadow-sm">
                     Aucun dossier pour le moment. Cliquez sur le bouton "Créer" pour ajouter votre premier projet !
-                </div>
+                &lt;/div>
             )}
-        </div>
+        &lt;/div>
     );
 };
 
-export default FolderManager;
+export default FolderManager;</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

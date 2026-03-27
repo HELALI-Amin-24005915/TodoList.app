@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Test suite for TodoList rendering behavior.
+ * Verifies that unfinished tasks are visible by default while terminal tasks are hidden.
+ */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';

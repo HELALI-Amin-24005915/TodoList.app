@@ -1,9 +1,25 @@
+/**
+ * @fileoverview Modal workflows for creating tasks and folders.
+ * This module contains form state, validation, and submission logic
+ * for the two creation tabs.
+ */
 import React, { useEffect, useState, useContext } from 'react';
 import { Modal, Tabs, Tab, Button, Form } from 'react-bootstrap';
 import { TodoContext } from '../../contexts/TodoContext';
 import { ETATS } from '../../utils/constants';
 import './CreateItemModal.css';
 
+/**
+ * Modal used to create either a task or a folder.
+ * Includes tab-level form state and simple validation before dispatching
+ * context actions.
+ *
+ * @param {Object} props - Component props.
+ * @param {boolean} props.show - Controls modal visibility.
+ * @param {function(): void} props.onHide - Closes the modal.
+ * @param {'task'|'folder'} [props.initialTab='task'] - Tab shown when opening the modal.
+ * @returns {JSX.Element} Creation modal.
+ */
 const CreateItemModal = ({ show, onHide, initialTab = 'task' }) => {
   const { addTask, addFolder, folders } = useContext(TodoContext);
   const [activeTab, setActiveTab] = useState('task');

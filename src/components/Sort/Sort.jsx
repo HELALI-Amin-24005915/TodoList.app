@@ -1,9 +1,21 @@
+/**
+ * @fileoverview Sorting selector for task collections.
+ * Encapsulates available sort keys and forwards changes to parent state.
+ */
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { FaSort } from 'react-icons/fa';
 import './Sort.css';
 
-
+/**
+ * Sort selector used by the task list.
+ * This component is controlled by parent-provided state.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} props.currentSort - Current sort key.
+ * @param {function(string): void} props.onSortChange - Sort change callback.
+ * @returns {JSX.Element} Sort control UI.
+ */
 const Sort = ({ currentSort, onSortChange }) => {
   return (
     <section className="sort-container" aria-labelledby="sort-legend">

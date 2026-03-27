@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Task-status filtering controls.
+ * Exposes multi-select status filters, presets, and overdue visibility toggles.
+ */
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { FaFilter } from 'react-icons/fa';
@@ -5,11 +9,16 @@ import { ETATS } from '../../utils/constants';
 import './Filter.css';
 
 /**
- * Filter Component
- * This component displays a dropdown to filter tasks by their status.
- * It uses React-Bootstrap for styling.
- * * @param {string} currentFilter - The currently selected filter value
- * @param {function} onFilterChange - Callback function to update the filter state in the parent
+ * Status filter panel used by the task list.
+ * It is stateless and delegates all changes to parent callbacks.
+ *
+ * @param {Object} props - Component props.
+ * @param {string[]} props.selectedStatuses - Currently selected task statuses.
+ * @param {function(string): void} props.onToggleStatus - Toggles one status in the active selection.
+ * @param {function(): void} props.onApplyActiveOnlyPreset - Applies the "active statuses" preset.
+ * @param {function(): void} props.onSelectAllStatuses - Selects all available statuses.
+ * @param {boolean} props.hideOverdue7Plus - Whether tasks overdue by more than 7 days are hidden.
+ * @param {function(): void} props.onToggleHideOverdue - Toggles overdue-task visibility.
  */
 const Filter = ({
   selectedStatuses,

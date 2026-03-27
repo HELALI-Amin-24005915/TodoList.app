@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Main tasks page module.
+ * Orchestrates filtering, sorting, and task-card rendering with memoized derivation.
+ */
 import React, { useContext, useMemo, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { TodoContext } from '../../contexts/TodoContext';
@@ -11,6 +15,12 @@ import './TodoList.css';
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * Main tasks page: combines sorting, filters, and memoized task rendering.
+ * It reads global state from context and computes display-ready tasks.
+ *
+ * @returns {JSX.Element} Todo list view.
+ */
 const TodoList = () => {
     const {
         tasks,

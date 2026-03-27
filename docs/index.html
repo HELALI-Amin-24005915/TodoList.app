@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Home</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AppContent">AppContent</a></li><li><a href="global.html#CreateItemModal">CreateItemModal</a></li><li><a href="global.html#ETATS">ETATS</a></li><li><a href="global.html#ETAT_TERMINE">ETAT_TERMINE</a></li><li><a href="global.html#Filter">Filter</a></li><li><a href="global.html#FolderFilter">FolderFilter</a></li><li><a href="global.html#FolderManager">FolderManager</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Sort">Sort</a></li><li><a href="global.html#Task">Task</a></li><li><a href="global.html#TodoContext">TodoContext</a></li><li><a href="global.html#TodoList">TodoList</a></li><li><a href="global.html#TodoProvider">TodoProvider</a></li><li><a href="global.html#root">root</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p></p>
+                    <h1>Home</h1>
+                </header>
+                
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>TodoList.app</h1>
+<p>A React task management app with folders, multi-criteria filtering, sorting, advanced editing, and a responsive UI (mobile + desktop).</p>
+<h2>Documentation</h2>
+<ul>
+<li>Technical project documentation: <a href="documentation/PROJECT_DOCUMENTATION.md">documentation/PROJECT_DOCUMENTATION.md</a></li>
+<li>Local API documentation (JSDoc) after generation: <a href="docs/index.html">docs/index.html</a></li>
+<li>Deployed documentation (GitHub Pages): https://helali-amin-24005915.github.io/TodoList.app/</li>
+</ul>
+<p>The workflow already used to publish the documentation is: <a href=".github/workflows/deploy-docs.yml">.github/workflows/deploy-docs.yml</a></p>
+<h2>Main features</h2>
+<ul>
+<li>Task management: create, edit, delete, and mark as completed.</li>
+<li>Folder management: create, edit, delete, with color coding.</li>
+<li>Many-to-many task-folder relationship.</li>
+<li>Combined filters:
+<ul>
+<li>by status (multi-select)</li>
+<li>by folder (multi-select)</li>
+<li>tasks without folder</li>
+<li>hide tasks overdue by more than 7 days</li>
+</ul>
+</li>
+<li>Task sorting:
+<ul>
+<li>due date (asc/desc)</li>
+<li>creation date</li>
+<li>alphabetical order</li>
+</ul>
+</li>
+<li>Contextual navigation:
+<ul>
+<li>Tasks mode / Folders mode</li>
+<li>click a folder to switch to tasks filtered by that folder</li>
+<li>clickable folder badges on tasks for quick filtering</li>
+</ul>
+</li>
+<li>Reset to the initial backup data at startup.</li>
+</ul>
+<h2>Technical stack</h2>
+<ul>
+<li>React 18 (Create React App)</li>
+<li>Context API for global state</li>
+<li>React-Bootstrap + Bootstrap 5</li>
+<li>React Icons + MUI Icons</li>
+<li>Chart.js (summary chart in the header)</li>
+<li>JSDoc + better-docs</li>
+</ul>
+<h2>Installation</h2>
+<p>Prerequisites:</p>
+<ul>
+<li>Node.js 18+ recommended</li>
+<li>npm</li>
+</ul>
+<p>Install dependencies:</p>
+<pre class="prettyprint source lang-bash"><code>npm install
+</code></pre>
+<p>If you encounter a peer dependency conflict related to better-docs:</p>
+<pre class="prettyprint source lang-bash"><code>npm install --legacy-peer-deps
+</code></pre>
+<h2>Scripts</h2>
+<h3>Run in development</h3>
+<pre class="prettyprint source lang-bash"><code>npm start
+</code></pre>
+<h3>Run tests</h3>
+<pre class="prettyprint source lang-bash"><code>npm test
+</code></pre>
+<h3>Lint</h3>
+<pre class="prettyprint source lang-bash"><code>npm run lint
+</code></pre>
+<h3>Production build</h3>
+<pre class="prettyprint source lang-bash"><code>npm run build
+</code></pre>
+<h3>Generate JSDoc documentation</h3>
+<pre class="prettyprint source lang-bash"><code>npm run docs
+</code></pre>
+<h2>Architecture (summary)</h2>
+<ul>
+<li><code>src/App.js</code>: app composition, context provider, conditional tasks/folders rendering, creation modal.</li>
+<li><code>src/contexts/TodoContext.jsx</code>: single source of truth for tasks, folders, relations, current view, and folder filters.</li>
+<li><code>src/components/TodoList</code>: tasks view, sorting + filtering + task card rendering.</li>
+<li><code>src/components/FolderManager</code>: folders view, folder editing, folder-&gt;tasks navigation.</li>
+<li><code>src/components/Task</code>: task display/editing and folder association management.</li>
+<li><code>src/components/Header</code>: statistics, mobile menu, view switch, startup reset modal.</li>
+<li><code>src/components/CreateItemModal</code>: task and folder creation.</li>
+</ul>
+<p>For architecture and flow details, see <a href="documentation/PROJECT_DOCUMENTATION.md">documentation/PROJECT_DOCUMENTATION.md</a>.</p>
+<h2>Documentation deployment</h2>
+<p>The repository contains a GitHub Actions workflow that:</p>
+<ol>
+<li>installs dependencies,</li>
+<li>generates JSDoc (<code>npm run docs</code>),</li>
+<li>publishes the <code>docs/</code> content to GitHub Pages.</li>
+</ol>
+<p>Workflow: <a href=".github/workflows/deploy-docs.yml">.github/workflows/deploy-docs.yml</a></p>
+<p>After enabling GitHub Pages in the repository, the final URL follows this format:</p>
+<ul>
+<li>https://helali-amin-24005915.github.io/TodoList.app/</li>
+</ul>
+<h2>Quality notes</h2>
+<ul>
+<li>CI validation: strict lint + tests + build on Node 18 and 20.</li>
+<li>Workflow CI: <a href=".github/workflows/ci.yml">.github/workflows/ci.yml</a></li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>App.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Root composition module for the Todo application.
+It wires global providers, high-level layout regions, and top-level feature views.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="App.js.html" class="button">View Source</a>
+            <span>
+                <a href="App.js.html">App.js</a>, <a href="App.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>components/CreateItemModal/CreateItemModal.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Modal workflows for creating tasks and folders.
+This module contains form state, validation, and submission logic
+for the two creation tabs.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_CreateItemModal_CreateItemModal.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="components_CreateItemModal_CreateItemModal.jsx.html">components/CreateItemModal/CreateItemModal.jsx</a>, <a href="components_CreateItemModal_CreateItemModal.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>components/Filter/Filter.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Task-status filtering controls.
+Exposes multi-select status filters, presets, and overdue visibility toggles.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_Filter_Filter.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="components_Filter_Filter.jsx.html">components/Filter/Filter.jsx</a>, <a href="components_Filter_Filter.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>components/Filter/FolderFilter.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Folder filtering controls for the task list.
+Supports multi-folder selection, no-folder inclusion, and single-folder shortcuts.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_Filter_FolderFilter.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="components_Filter_FolderFilter.jsx.html">components/Filter/FolderFilter.jsx</a>, <a href="components_Filter_FolderFilter.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>components/FolderManager/FolderManager.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Folder management module.
+Handles folder display, inline editing workflows, deletion, and quick navigation
+into tasks filtered by the selected folder.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_FolderManager_FolderManager.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="components_FolderManager_FolderManager.jsx.html">components/FolderManager/FolderManager.jsx</a>, <a href="components_FolderManager_FolderManager.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>components/Footer/Footer.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Footer action module.
+Provides the persistent floating action button used to trigger item creation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_Footer_Footer.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="components_Footer_Footer.jsx.html">components/Footer/Footer.jsx</a>, <a href="components_Footer_Footer.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>components/Header/Header.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Header module for global navigation and status analytics.
+It renders task counters, a doughnut summary chart, mobile actions,
+and startup reset confirmation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_Header_Header.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="components_Header_Header.jsx.html">components/Header/Header.jsx</a>, <a href="components_Header_Header.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>components/Sort/Sort.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Sorting selector for task collections.
+Encapsulates available sort keys and forwards changes to parent state.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_Sort_Sort.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="components_Sort_Sort.jsx.html">components/Sort/Sort.jsx</a>, <a href="components_Sort_Sort.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>components/Task/Task.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Task card presentation and interactions.
+Implements expand/collapse behavior, inline editing, state transitions,
+deletion, and folder linking controls.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_Task_Task.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="components_Task_Task.jsx.html">components/Task/Task.jsx</a>, <a href="components_Task_Task.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>components/TodoList/TodoList.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Main tasks page module.
+Orchestrates filtering, sorting, and task-card rendering with memoized derivation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_TodoList_TodoList.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="components_TodoList_TodoList.jsx.html">components/TodoList/TodoList.jsx</a>, <a href="components_TodoList_TodoList.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>components/TodoList/TodoList.test.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Test suite for TodoList rendering behavior.
+Verifies that unfinished tasks are visible by default while terminal tasks are hidden.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_TodoList_TodoList.test.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="components_TodoList_TodoList.test.jsx.html">components/TodoList/TodoList.test.jsx</a>, <a href="components_TodoList_TodoList.test.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>contexts/TodoContext.jsx</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Global state container for tasks, folders, and relations.
+It provides CRUD operations, derived filters, and view-navigation helpers
+through React Context.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="contexts_TodoContext.jsx.html" class="button">View Source</a>
+            <span>
+                <a href="contexts_TodoContext.jsx.html">contexts/TodoContext.jsx</a>, <a href="contexts_TodoContext.jsx.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>index.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Application entry point.
+This module loads global styles, initializes the React root,
+and mounts the top-level App component.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="index.js.html" class="button">View Source</a>
+            <span>
+                <a href="index.js.html">index.js</a>, <a href="index.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>utils/constants.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Shared domain constants for task lifecycle states.
+This module centralizes canonical status values so creation, editing,
+filtering, and analytics all operate on the same vocabulary.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="utils_constants.js.html" class="button">View Source</a>
+            <span>
+                <a href="utils_constants.js.html">utils/constants.js</a>, <a href="utils_constants.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>
