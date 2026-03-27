@@ -1,0 +1,101 @@
+
+.todo-list h2 {
+	font-weight: 900;
+	letter-spacing: -0.02em;
+	margin-bottom: 16px;
+}
+
+.todo-controls {
+	padding: clamp(12px, 2.5vw, 18px) !important;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.86));
+	border: 1px solid rgba(15, 23, 42, 0.09);
+	border-radius: var(--radius);
+	box-shadow: 0 16px 34px rgba(15, 23, 42, 0.09);
+	transition: box-shadow 0.24s ease-in-out, border-color 0.24s ease-in-out;
+}
+
+.todo-controls:hover {
+	border-color: rgba(13, 110, 253, 0.18);
+	box-shadow: 0 18px 34px rgba(15, 23, 42, 0.1);
+}
+
+.todo-controls:focus-within {
+	border-color: rgba(13, 110, 253, 0.45);
+	box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12), 0 18px 34px rgba(15, 23, 42, 0.1);
+}
+
+.todo-controls .row {
+	row-gap: 14px;
+}
+
+.todo-list-header {
+	margin-bottom: 6px;
+}
+
+.tasks-container {
+	margin-top: 14px;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px;
+	align-items: start;
+}
+
+@media (min-width: 992px) {
+	.todo-controls {
+		padding: 16px !important;
+	}
+
+	.todo-controls .row {
+		row-gap: 0;
+	}
+
+	.tasks-container {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 16px;
+	}
+}
+
+@media (min-width: 1400px) {
+	.todo-controls {
+		padding: 18px !important;
+	}
+
+	.tasks-container {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 18px;
+	}
+}
+
+@media (max-width: 991px) and (min-width: 577px) {
+	.tasks-container {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 576px) {
+	.todo-controls {
+		padding: 10px !important;
+	}
+
+	.todo-list h2 {
+		font-size: 1.1rem;
+		margin-bottom: 12px;
+	}
+
+	.todo-controls .row {
+		row-gap: 10px;
+	}
+
+	.tasks-container {
+		grid-template-columns: 1fr;
+		gap: 12px;
+	}
+}
+
+.todo-list .alert-info {
+	border: 1px solid rgba(13, 110, 253, 0.24);
+	border-radius: var(--radius);
+	background: linear-gradient(180deg, rgba(13, 110, 253, 0.08), rgba(13, 110, 253, 0.03));
+	color: var(--text);
+	box-shadow: 0 10px 24px rgba(13, 110, 253, 0.08);
+}

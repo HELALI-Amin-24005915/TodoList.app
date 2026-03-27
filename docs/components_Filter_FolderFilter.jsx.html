@@ -1,0 +1,217 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> components/Filter/FolderFilter.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AppContent">AppContent</a></li><li><a href="global.html#CreateItemModal">CreateItemModal</a></li><li><a href="global.html#ETATS">ETATS</a></li><li><a href="global.html#ETAT_TERMINE">ETAT_TERMINE</a></li><li><a href="global.html#Filter">Filter</a></li><li><a href="global.html#FolderFilter">FolderFilter</a></li><li><a href="global.html#FolderManager">FolderManager</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Sort">Sort</a></li><li><a href="global.html#Task">Task</a></li><li><a href="global.html#TodoContext">TodoContext</a></li><li><a href="global.html#TodoList">TodoList</a></li><li><a href="global.html#TodoProvider">TodoProvider</a></li><li><a href="global.html#root">root</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/Filter/FolderFilter.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Folder filtering controls for the task list.
+ * Supports multi-folder selection, no-folder inclusion, and single-folder shortcuts.
+ */
+import React, { useContext } from 'react';
+import { Form } from 'react-bootstrap';
+import { FaFolderOpen } from 'react-icons/fa';
+import { TodoContext } from '../../contexts/TodoContext';
+
+/**
+ * Folder filter panel supporting multi-select and "only this folder" shortcut.
+ *
+ * @param {Object} props - Component props.
+ * @param {'ALL'|'CUSTOM'} props.folderFilterMode - Current folder filter mode.
+ * @param {number[]} props.selectedFolderIds - Selected folder ids.
+ * @param {boolean} props.includeNoFolder - Whether tasks without folders are included.
+ * @param {function(): void} props.onShowAllFolders - Clears folder filtering.
+ * @param {function(number): void} props.onToggleFolder - Toggles one folder selection.
+ * @param {function(): void} props.onToggleIncludeNoFolder - Toggles "no folder" filtering.
+ * @param {function(number): void} props.onSelectSingleFolder - Filters to a single folder.
+ * @returns {JSX.Element} Folder filter UI.
+ */
+const FolderFilter = ({
+  folderFilterMode,
+  selectedFolderIds,
+  includeNoFolder,
+  onShowAllFolders,
+  onToggleFolder,
+  onToggleIncludeNoFolder,
+  onSelectSingleFolder,
+}) => {
+  const { folders } = useContext(TodoContext);
+
+  const selectedCount = selectedFolderIds.length + (includeNoFolder ? 1 : 0);
+
+  return (
+    &lt;section className="filter-container" aria-labelledby="folder-filter-legend">
+      &lt;fieldset className="filter-fieldset">
+        &lt;legend id="folder-filter-legend" className="filter-label d-flex align-items-center gap-2">&lt;FaFolderOpen /> Filtrer par dossier&lt;/legend>
+
+        &lt;ul className="filter-actions d-flex flex-wrap gap-2 mb-2" aria-label="Actions de filtre dossier">
+          &lt;li>
+            &lt;button
+              type="button"
+              className={`btn btn-sm ${folderFilterMode === 'ALL' ? 'btn-primary' : 'btn-outline-secondary'}`}
+              onClick={onShowAllFolders}
+            >
+              Tous
+            &lt;/button>
+          &lt;/li>
+          &lt;li className="folder-filter-count small text-muted align-self-center">
+            {folderFilterMode === 'ALL' ? 'Aucun filtre dossier actif' : `${selectedCount} filtre(s) actif(s)`}
+          &lt;/li>
+        &lt;/ul>
+
+        &lt;Form.Check
+          id="folder-filter-none"
+          type="checkbox"
+          className="filter-check"
+          label="Taches sans dossier"
+          checked={includeNoFolder}
+          onChange={onToggleIncludeNoFolder}
+        />
+
+        &lt;ul className="filter-checkbox-list mt-2">
+          {folders.map((folder) => {
+            const isChecked = selectedFolderIds.includes(folder.id);
+            return (
+              &lt;li key={folder.id} className="folder-filter-item d-flex align-items-center justify-content-between gap-2">
+                &lt;Form.Check
+                  id={`folder-filter-${folder.id}`}
+                  type="checkbox"
+                  className="filter-check"
+                  label={folder.title}
+                  checked={isChecked}
+                  onChange={() => onToggleFolder(folder.id)}
+                />
+                &lt;button
+                  type="button"
+                  className="folder-filter-single-btn btn btn-sm btn-outline-primary"
+                  onClick={() => onSelectSingleFolder(folder.id)}
+                  aria-label={`Filtrer uniquement sur ${folder.title}`}
+                >
+                  Seulement
+                &lt;/button>
+              &lt;/li>
+            );
+          })}
+        &lt;/ul>
+      &lt;/fieldset>
+    &lt;/section>
+  );
+};
+
+export default FolderFilter;</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

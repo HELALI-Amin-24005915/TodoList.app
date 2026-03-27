@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> components/Header/Header.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AppContent">AppContent</a></li><li><a href="global.html#CreateItemModal">CreateItemModal</a></li><li><a href="global.html#ETATS">ETATS</a></li><li><a href="global.html#ETAT_TERMINE">ETAT_TERMINE</a></li><li><a href="global.html#Filter">Filter</a></li><li><a href="global.html#FolderFilter">FolderFilter</a></li><li><a href="global.html#FolderManager">FolderManager</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Sort">Sort</a></li><li><a href="global.html#Task">Task</a></li><li><a href="global.html#TodoContext">TodoContext</a></li><li><a href="global.html#TodoList">TodoList</a></li><li><a href="global.html#TodoProvider">TodoProvider</a></li><li><a href="global.html#root">root</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/Header/Header.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Header module for global navigation and status analytics.
+ * It renders task counters, a doughnut summary chart, mobile actions,
+ * and startup reset confirmation.
+ */
+import React, { useContext, useEffect, useState } from 'react';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+import { Offcanvas, Button, Modal } from 'react-bootstrap';
+import { FaBars, FaListCheck, FaFolderOpen, FaPlus } from 'react-icons/fa6';
+import { TodoContext } from '../../contexts/TodoContext';
+import { ETAT_TERMINE } from '../../utils/constants';
+import './Header.css';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+/**
+ * Top header component displaying statistics, view navigation,
+ * mobile off-canvas actions, and startup reset modal.
+ *
+ * @param {Object} props - Component props.
+ * @param {function(): void} props.onCreateTask - Opens task creation flow.
+ * @param {function(): void} props.onCreateFolder - Opens folder creation flow.
+ * @returns {JSX.Element} Header UI.
+ */
+const Header = ({ onCreateTask, onCreateFolder }) => {
+  // get tasks from context to calculate stats for the header
+  const {
+    tasks,
+    currentView,
+    goToTasksView,
+    goToFoldersView,
+    resetFromBackup,
+  } = useContext(TodoContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const isFolderView = currentView === 'folders';
+
+  useEffect(() => {
+    setIsResetModalOpen(true);
+  }, []);
+
+  const handleToggleView = () => {
+    if (isFolderView) goToTasksView();
+    else goToFoldersView();
+  };
+
+  const closeResetModal = () => {
+    setIsResetModalOpen(false);
+  };
+
+  const handleResetAll = () => {
+    resetFromBackup();
+    setIsResetModalOpen(false);
+    setIsMenuOpen(false);
+  };
+
+  // calculate stats for the header
+  const totalTasks = tasks.length;
+  const unfinishedTasks = tasks.filter(task => !ETAT_TERMINE.includes(task.etat)).length;
+
+  // prepare data for the doughnut chart and count tasks by status
+  const statusCounts = tasks.reduce((acc, task) => {
+    acc[task.etat] = (acc[task.etat] || 0) + 1;
+    return acc;
+  }, {});
+
+  const chartData = {
+    labels: Object.keys(statusCounts),
+    datasets: [
+      {
+        data: Object.values(statusCounts),
+        backgroundColor: [
+          '#36A2EB', 
+          '#FFCE56', 
+          '#4BC0C0', 
+          '#FF6384', 
+          '#9966FF' 
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    plugins: {
+      legend: { display: false } 
+    },
+    maintainAspectRatio: false
+  };
+
+  return (
+    &lt;header className="header">
+      &lt;div className="header-mobile-actions">
+        &lt;button
+          type="button"
+          className="header-burger btn btn-outline-primary"
+          onClick={() => setIsMenuOpen(true)}
+          aria-label="Ouvrir le menu"
+        >
+          &lt;FaBars />
+        &lt;/button>
+      &lt;/div>
+
+      &lt;div className="header-brand">
+        &lt;h1>Gestion de tâches&lt;/h1>
+        &lt;div className="d-flex flex-wrap gap-2 align-items-center">
+          &lt;button className="btn btn-outline-primary ms-3 header-toggle-view" onClick={handleToggleView}>
+            {isFolderView ? 'Voir les tâches' : 'Gérer les dossiers'}
+          &lt;/button>
+        &lt;/div>
+      &lt;/div>
+
+      &lt;div className="header-stats">
+        &lt;div className="stats-text">
+          &lt;p>&lt;strong>Tâches totales :&lt;/strong> {totalTasks}&lt;/p>
+          &lt;p>&lt;strong>Tâches non terminées :&lt;/strong> {unfinishedTasks}&lt;/p>
+        &lt;/div>
+        
+        &lt;div className="stats-chart">
+          {totalTasks > 0 ? (
+            &lt;Doughnut data={chartData} options={chartOptions} />
+          ) : (
+            &lt;p className="text-muted small">Aucune donnée disponible&lt;/p>
+          )}
+        &lt;/div>
+      &lt;/div>
+
+      &lt;Offcanvas
+        show={isMenuOpen}
+        onHide={() => setIsMenuOpen(false)}
+        placement="start"
+        className="header-offcanvas"
+      >
+        &lt;Offcanvas.Header closeButton>
+          &lt;Offcanvas.Title>Menu&lt;/Offcanvas.Title>
+        &lt;/Offcanvas.Header>
+        &lt;Offcanvas.Body>
+          &lt;div className="d-grid gap-2">
+            &lt;Button
+              variant={isFolderView ? 'outline-primary' : 'primary'}
+              className="d-flex align-items-center justify-content-between"
+              onClick={() => {
+                goToTasksView();
+                setIsMenuOpen(false);
+              }}
+            >
+              &lt;span className="d-inline-flex align-items-center gap-2">
+                &lt;FaListCheck /> Tâches
+              &lt;/span>
+            &lt;/Button>
+
+            &lt;Button
+              variant={isFolderView ? 'primary' : 'outline-primary'}
+              className="d-flex align-items-center justify-content-between"
+              onClick={() => {
+                goToFoldersView();
+                setIsMenuOpen(false);
+              }}
+            >
+              &lt;span className="d-inline-flex align-items-center gap-2">
+                &lt;FaFolderOpen /> Dossiers
+              &lt;/span>
+            &lt;/Button>
+
+            &lt;div className="mt-2 text-muted small">Créer&lt;/div>
+
+            &lt;Button
+              variant="outline-secondary"
+              className="d-flex align-items-center justify-content-between"
+              onClick={() => {
+                if (typeof onCreateTask === 'function') onCreateTask();
+                setIsMenuOpen(false);
+              }}
+            >
+              &lt;span className="d-inline-flex align-items-center gap-2">
+                &lt;FaPlus /> Nouvelle tâche
+              &lt;/span>
+            &lt;/Button>
+
+            &lt;Button
+              variant="outline-secondary"
+              className="d-flex align-items-center justify-content-between"
+              onClick={() => {
+                if (typeof onCreateFolder === 'function') onCreateFolder();
+                setIsMenuOpen(false);
+              }}
+            >
+              &lt;span className="d-inline-flex align-items-center gap-2">
+                &lt;FaPlus /> Nouveau dossier
+              &lt;/span>
+            &lt;/Button>
+
+          &lt;/div>
+        &lt;/Offcanvas.Body>
+      &lt;/Offcanvas>
+
+      &lt;Modal
+        show={isResetModalOpen}
+        onHide={closeResetModal}
+        centered
+        className="header-reset-modal"
+      >
+        &lt;Modal.Header closeButton>
+          &lt;Modal.Title>Reinitialiser les donnees&lt;/Modal.Title>
+        &lt;/Modal.Header>
+        &lt;Modal.Body>
+          Voulez-vous reinitialiser les taches, dossiers et relations des le lancement ?
+          &lt;br />
+          &lt;span className="text-muted">Si vous confirmez, les donnees seront rechargees depuis la sauvegarde initiale.&lt;/span>
+        &lt;/Modal.Body>
+        &lt;Modal.Footer>
+          &lt;Button variant="outline-secondary" onClick={closeResetModal}>
+            Non, continuer
+          &lt;/Button>
+          &lt;Button variant="danger" onClick={handleResetAll}>
+            Oui, reinitialiser
+          &lt;/Button>
+        &lt;/Modal.Footer>
+      &lt;/Modal>
+    &lt;/header>
+  );
+};
+
+export default Header;</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

@@ -1,10 +1,15 @@
 /**
- * Enum for Task Statuses
+ * @fileoverview Shared domain constants for task lifecycle states.
+ * This module centralizes canonical status values so creation, editing,
+ * filtering, and analytics all operate on the same vocabulary.
+ */
+/**
+ * Canonical task status values.
  * @readonly
  * @enum {string}
  */
 export const ETATS = {
-    NOUVEAUX: 'Nouveaux',
+    NOUVEAU: 'Nouveau',
     EN_COURS: 'En cours',
     REUSSI: 'Réussi',
     EN_ATTENTE: 'En attente',
@@ -12,7 +17,7 @@ export const ETATS = {
 }
 
 /**
- * Array of statuses considered as "Finished"
+ * Statuses considered terminal/finished in business rules.
  * @constant {string[]}
  */
 export const ETAT_TERMINE = [

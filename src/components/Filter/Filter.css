@@ -1,0 +1,209 @@
+.filter-container {
+    margin-bottom: 1rem;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 14px;
+    padding: 10px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.filter-fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.filter-container:focus-within {
+    border-color: rgba(13, 110, 253, 0.34);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.09), 0 12px 24px rgba(15, 23, 42, 0.08);
+}
+
+.filter-label {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.45rem;
+    display: block;
+}
+
+.filter-label svg {
+    color: #0d6efd;
+    transition: transform 0.2s ease-in-out;
+}
+
+.filter-container:hover .filter-label svg {
+    transform: translateY(-1px);
+}
+
+.filter-select {
+    border-radius: 12px;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    background-color: #ffffff;
+    color: #0f172a;
+    font-weight: 600;
+    transition: border-color 0.22s ease-in-out, box-shadow 0.22s ease-in-out, background-color 0.22s ease-in-out;
+}
+
+.filter-select:hover {
+    border-color: rgba(13, 110, 253, 0.4);
+    background-color: #fbfdff;
+}
+
+.filter-select:focus {
+    border-color: rgba(13, 110, 253, 0.55);
+    box-shadow: 0 0 0 0.23rem rgba(13, 110, 253, 0.12);
+}
+
+.filter-select:active {
+    background-color: #f8fbff;
+}
+
+.filter-checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.78);
+    margin: 0;
+    list-style: none;
+}
+
+.filter-check-item {
+    margin: 0;
+    padding: 0;
+}
+
+.filter-check .form-check-input {
+    cursor: pointer;
+}
+
+.filter-check .form-check-label {
+    cursor: pointer;
+    color: #334155;
+    font-size: 0.9rem;
+}
+
+.filter-actions .btn {
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 0.34rem 0.72rem;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.filter-actions {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.filter-actions .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px rgba(15, 23, 42, 0.12);
+}
+
+.filter-overdue-toggle .form-check-label {
+    color: #334155;
+    font-weight: 600;
+}
+
+.folder-filter-count {
+    line-height: 1.2;
+}
+
+.folder-filter-item {
+    padding: 3px 0;
+}
+
+.folder-filter-single-btn {
+    min-width: 92px;
+    border-radius: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+@media (min-width: 992px) {
+    .filter-container {
+        max-width: none;
+        min-height: 100%;
+        padding: 12px;
+    }
+
+    .filter-checkbox-list {
+        max-height: 228px;
+        overflow: auto;
+    }
+
+    .folder-filter-item {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center !important;
+        gap: 10px;
+        padding: 4px 0;
+    }
+
+    .folder-filter-item .filter-check {
+        margin-bottom: 0;
+    }
+
+    .folder-filter-single-btn {
+        min-width: 108px;
+    }
+}
+
+@media (max-width: 576px) {
+    .filter-container {
+        margin-bottom: 0.8rem;
+        padding: 9px;
+    }
+
+    .filter-label {
+        font-size: 0.74rem;
+        margin-bottom: 0.38rem;
+    }
+
+    .filter-select {
+        min-height: 38px;
+        font-size: 0.9rem;
+    }
+
+    .filter-checkbox-list {
+        gap: 5px;
+        padding: 8px;
+    }
+
+    .filter-check .form-check-label {
+        font-size: 0.86rem;
+    }
+
+    .filter-actions {
+        display: grid !important;
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .folder-filter-item {
+        flex-wrap: wrap;
+        align-items: stretch !important;
+    }
+
+    .folder-filter-item .filter-check {
+        flex: 1 1 100%;
+    }
+
+    .folder-filter-single-btn {
+        width: 100%;
+        min-width: 0;
+    }
+}

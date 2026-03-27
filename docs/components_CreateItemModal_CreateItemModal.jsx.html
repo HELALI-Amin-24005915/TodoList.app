@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> components/CreateItemModal/CreateItemModal.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AppContent">AppContent</a></li><li><a href="global.html#CreateItemModal">CreateItemModal</a></li><li><a href="global.html#ETATS">ETATS</a></li><li><a href="global.html#ETAT_TERMINE">ETAT_TERMINE</a></li><li><a href="global.html#Filter">Filter</a></li><li><a href="global.html#FolderFilter">FolderFilter</a></li><li><a href="global.html#FolderManager">FolderManager</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Sort">Sort</a></li><li><a href="global.html#Task">Task</a></li><li><a href="global.html#TodoContext">TodoContext</a></li><li><a href="global.html#TodoList">TodoList</a></li><li><a href="global.html#TodoProvider">TodoProvider</a></li><li><a href="global.html#root">root</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/CreateItemModal/CreateItemModal.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Modal workflows for creating tasks and folders.
+ * This module contains form state, validation, and submission logic
+ * for the two creation tabs.
+ */
+import React, { useEffect, useState, useContext } from 'react';
+import { Modal, Tabs, Tab, Button, Form } from 'react-bootstrap';
+import { TodoContext } from '../../contexts/TodoContext';
+import { ETATS } from '../../utils/constants';
+import './CreateItemModal.css';
+
+/**
+ * Modal used to create either a task or a folder.
+ * Includes tab-level form state and simple validation before dispatching
+ * context actions.
+ *
+ * @param {Object} props - Component props.
+ * @param {boolean} props.show - Controls modal visibility.
+ * @param {function(): void} props.onHide - Closes the modal.
+ * @param {'task'|'folder'} [props.initialTab='task'] - Tab shown when opening the modal.
+ * @returns {JSX.Element} Creation modal.
+ */
+const CreateItemModal = ({ show, onHide, initialTab = 'task' }) => {
+  const { addTask, addFolder, folders } = useContext(TodoContext);
+  const [activeTab, setActiveTab] = useState('task');
+  
+  const [taskTitle, setTaskTitle] = useState('');
+  const [taskDesc, setTaskDesc] = useState('');
+  const [taskDate, setTaskDate] = useState('');
+  const [taskEtat, setTaskEtat] = useState(ETATS.NOUVEAU);
+  const [taskPriority, setTaskPriority] = useState(2);
+  const [taskFolder, setTaskFolder] = useState(''); 
+  const [taskEquipiers, setTaskEquipiers] = useState('');
+  
+  const [folderTitle, setFolderTitle] = useState('');
+  const [folderColor, setFolderColor] = useState('bluesky'); 
+
+  const handleTaskSubmit = (e) => {
+    e.preventDefault();
+    if (taskTitle.length >= 5 &amp;&amp; taskDate) {
+      addTask({
+        title: taskTitle,
+        description: taskDesc,
+        date_creation: new Date().toISOString().split('T')[0],
+        date_echeance: taskDate, 
+        priorite: Number(taskPriority),
+        etat: taskEtat,
+        equipiers: taskEquipiers
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean),
+        folderId: taskFolder ? Number(taskFolder) : null 
+      });
+      
+      setTaskTitle(''); 
+      setTaskDesc('');
+      setTaskDate('');
+      setTaskEtat(ETATS.NOUVEAU);
+      setTaskPriority(2);
+      setTaskFolder(''); 
+      setTaskEquipiers('');
+      onHide(); 
+    } else {
+      alert("Veuillez remplir le titre (min 5 caractères) et la date d'échéance.");
+    }
+  };
+
+  const handleFolderSubmit = (e) => {
+    e.preventDefault();
+    if (folderTitle.length >= 3) {
+      addFolder({
+        title: folderTitle,
+        description: "",
+        color: folderColor,
+        icon: "",
+        type: "project" 
+      });
+      setFolderTitle('');
+      setFolderColor('bluesky');
+      onHide(); 
+    } else {
+      alert("Le nom du dossier doit faire au moins 3 caractères.");
+    }
+  };
+
+  useEffect(() => {
+    if (show) setActiveTab(initialTab);
+  }, [show, initialTab]);
+
+  return (
+    &lt;Modal show={show} onHide={onHide} centered className="create-item-modal">
+      &lt;Modal.Header closeButton className="create-item-modal__header">
+        &lt;Modal.Title>Créer un nouvel élément&lt;/Modal.Title>
+      &lt;/Modal.Header>
+      
+      &lt;Modal.Body>
+        &lt;Tabs 
+          id="create-item-tabs" 
+          activeKey={activeTab} 
+          onSelect={(k) => setActiveTab(k)} 
+          className="create-item-modal__tabs mb-3"
+        >
+          &lt;Tab eventKey="task" title="Tâche">
+            &lt;Form onSubmit={handleTaskSubmit}>
+              &lt;Form.Group className="mb-3">
+                &lt;Form.Label>Titre de la tâche *&lt;/Form.Label>
+                &lt;Form.Control 
+                  type="text" 
+                  placeholder="Ex: Faire les courses" 
+                  value={taskTitle}
+                  onChange={(e) => setTaskTitle(e.target.value)}
+                  required minLength={5}
+                />
+              &lt;/Form.Group>
+
+              &lt;Form.Group className="mb-3">
+                &lt;Form.Label>Description&lt;/Form.Label>
+                &lt;Form.Control 
+                  as="textarea" rows={2}
+                  placeholder="Détails optionnels..." 
+                  value={taskDesc}
+                  onChange={(e) => setTaskDesc(e.target.value)}
+                />
+              &lt;/Form.Group>
+
+              &lt;div className="row">
+                &lt;Form.Group className="col-md-6 mb-3">
+                  &lt;Form.Label>Date d'échéance *&lt;/Form.Label>
+                  &lt;Form.Control 
+                    type="date" 
+                    value={taskDate}
+                    onChange={(e) => setTaskDate(e.target.value)}
+                    required
+                  />
+                &lt;/Form.Group>
+
+                &lt;Form.Group className="col-md-6 mb-3">
+                  &lt;Form.Label>Priorité&lt;/Form.Label>
+                  &lt;Form.Select 
+                    value={taskPriority}
+                    onChange={(e) => setTaskPriority(e.target.value)}
+                  >
+                    &lt;option value={1}>1 - Haute (Rouge)&lt;/option>
+                    &lt;option value={2}>2 - Moyenne (Jaune)&lt;/option>
+                    &lt;option value={3}>3 - Basse (Bleu)&lt;/option>
+                  &lt;/Form.Select>
+                &lt;/Form.Group>
+              &lt;/div>
+
+              &lt;div className="row">
+                &lt;Form.Group className="col-md-6 mb-3">
+                  &lt;Form.Label>Statut&lt;/Form.Label>
+                  &lt;Form.Select
+                    value={taskEtat}
+                    onChange={(e) => setTaskEtat(e.target.value)}
+                  >
+                    &lt;option value={ETATS.NOUVEAU}>Nouveau&lt;/option>
+                    &lt;option value={ETATS.EN_COURS}>En cours&lt;/option>
+                    &lt;option value={ETATS.EN_ATTENTE}>En attente&lt;/option>
+                    &lt;option value={ETATS.REUSSI}>Réussi&lt;/option>
+                    &lt;option value={ETATS.ABANDONNE}>Abandonné&lt;/option>
+                  &lt;/Form.Select>
+                &lt;/Form.Group>
+
+                &lt;Form.Group className="col-md-6 mb-3">
+                  &lt;Form.Label>Équipiers (séparés par des virgules)&lt;/Form.Label>
+                  &lt;Form.Control
+                    type="text"
+                    placeholder="Ex: Paul, Bob"
+                    value={taskEquipiers}
+                    onChange={(e) => setTaskEquipiers(e.target.value)}
+                  />
+                &lt;/Form.Group>
+              &lt;/div>
+
+              &lt;Form.Group className="mb-3">
+                &lt;Form.Label>Associer à un dossier (Optionnel)&lt;/Form.Label>
+                &lt;Form.Select 
+                  value={taskFolder}
+                  onChange={(e) => setTaskFolder(e.target.value)}
+                >
+                  &lt;option value="">-- Aucun dossier --&lt;/option>
+                  {folders.map(folder => (
+                    &lt;option key={folder.id} value={folder.id}>
+                      {folder.title}
+                    &lt;/option>
+                  ))}
+                &lt;/Form.Select>
+              &lt;/Form.Group>
+
+              &lt;div className="d-flex justify-content-end mt-2">
+                &lt;Button variant="primary" type="submit">Créer la tâche&lt;/Button>
+              &lt;/div>
+            &lt;/Form>
+          &lt;/Tab>
+
+          &lt;Tab eventKey="folder" title="Dossier">
+            &lt;Form onSubmit={handleFolderSubmit}>
+              &lt;Form.Group className="mb-3">
+                &lt;Form.Label>Nom du dossier *&lt;/Form.Label>
+                &lt;Form.Control 
+                  type="text" 
+                  placeholder="Ex: Projet React" 
+                  value={folderTitle}
+                  onChange={(e) => setFolderTitle(e.target.value)}
+                  required minLength={3}
+                />
+              &lt;/Form.Group>
+              
+              &lt;Form.Group className="mb-3">
+                &lt;Form.Label>Couleur&lt;/Form.Label>
+                &lt;Form.Select 
+                  value={folderColor} 
+                  onChange={(e) => setFolderColor(e.target.value)}
+                >
+                  &lt;option value="bluesky">Bleu ciel&lt;/option>
+                  &lt;option value="orange">Orange&lt;/option>
+                  &lt;option value="pink">Rose&lt;/option>
+                  &lt;option value="green">Vert&lt;/option>
+                  &lt;option value="purple">Violet&lt;/option>
+                  &lt;option value="red">Rouge&lt;/option>
+                  &lt;option value="yellow">Jaune&lt;/option>
+                  &lt;option value="cyan">Cyan&lt;/option>
+                  &lt;option value="grey">Gris&lt;/option>
+                  &lt;option value="brown">Marron&lt;/option>
+                &lt;/Form.Select>
+              &lt;/Form.Group>
+
+              &lt;div className="d-flex justify-content-end">
+                &lt;Button variant="primary" type="submit">Créer le dossier&lt;/Button>
+              &lt;/div>
+            &lt;/Form>
+          &lt;/Tab>
+        &lt;/Tabs>
+      &lt;/Modal.Body>
+    &lt;/Modal>
+  );
+};
+
+export default CreateItemModal;</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

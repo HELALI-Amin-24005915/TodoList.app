@@ -1,70 +1,122 @@
-# Getting Started with Create React App
+# TodoList.app
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React task management app with folders, multi-criteria filtering, sorting, advanced editing, and a responsive UI (mobile + desktop).
 
-## Available Scripts
+## Documentation
 
-In the project directory, you can run:
+- Technical project documentation: [documentation/PROJECT_DOCUMENTATION.md](documentation/PROJECT_DOCUMENTATION.md)
+- Local API documentation (JSDoc) after generation: [docs/index.html](docs/index.html)
+- Deployed documentation (GitHub Pages): https://helali-amin-24005915.github.io/TodoList.app/
 
-### `npm start`
+The workflow already used to publish the documentation is: [.github/workflows/deploy-docs.yml](.github/workflows/deploy-docs.yml)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Main features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Task management: create, edit, delete, and mark as completed.
+- Folder management: create, edit, delete, with color coding.
+- Many-to-many task-folder relationship.
+- Combined filters:
+	- by status (multi-select)
+	- by folder (multi-select)
+	- tasks without folder
+	- hide tasks overdue by more than 7 days
+- Task sorting:
+	- due date (asc/desc)
+	- creation date
+	- alphabetical order
+- Contextual navigation:
+	- Tasks mode / Folders mode
+	- click a folder to switch to tasks filtered by that folder
+	- clickable folder badges on tasks for quick filtering
+- Reset to the initial backup data at startup.
 
-### `npm test`
+## Technical stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React 18 (Create React App)
+- Context API for global state
+- React-Bootstrap + Bootstrap 5
+- React Icons + MUI Icons
+- Chart.js (summary chart in the header)
+- JSDoc + better-docs
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Prerequisites:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js 18+ recommended
+- npm
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Install dependencies:
 
-### `npm run eject`
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+If you encounter a peer dependency conflict related to better-docs:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm install --legacy-peer-deps
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Scripts
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Run in development
 
-## Learn More
+```bash
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Run tests
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm test
+```
 
-### Code Splitting
+### Lint
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm run lint
+```
 
-### Analyzing the Bundle Size
+### Production build
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm run build
+```
 
-### Making a Progressive Web App
+### Generate JSDoc documentation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+npm run docs
+```
 
-### Advanced Configuration
+## Architecture (summary)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- `src/App.js`: app composition, context provider, conditional tasks/folders rendering, creation modal.
+- `src/contexts/TodoContext.jsx`: single source of truth for tasks, folders, relations, current view, and folder filters.
+- `src/components/TodoList`: tasks view, sorting + filtering + task card rendering.
+- `src/components/FolderManager`: folders view, folder editing, folder->tasks navigation.
+- `src/components/Task`: task display/editing and folder association management.
+- `src/components/Header`: statistics, mobile menu, view switch, startup reset modal.
+- `src/components/CreateItemModal`: task and folder creation.
 
-### Deployment
+For architecture and flow details, see [documentation/PROJECT_DOCUMENTATION.md](documentation/PROJECT_DOCUMENTATION.md).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Documentation deployment
 
-### `npm run build` fails to minify
+The repository contains a GitHub Actions workflow that:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. installs dependencies,
+2. generates JSDoc (`npm run docs`),
+3. publishes the `docs/` content to GitHub Pages.
+
+Workflow: [.github/workflows/deploy-docs.yml](.github/workflows/deploy-docs.yml)
+
+After enabling GitHub Pages in the repository, the final URL follows this format:
+
+- https://helali-amin-24005915.github.io/TodoList.app/
+
+## Quality notes
+
+- CI validation: strict lint + tests + build on Node 18 and 20.
+- Workflow CI: [.github/workflows/ci.yml](.github/workflows/ci.yml)

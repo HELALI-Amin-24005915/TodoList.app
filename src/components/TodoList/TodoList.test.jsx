@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Test suite for TodoList rendering behavior.
+ * Verifies that unfinished tasks are visible by default while terminal tasks are hidden.
+ */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -16,8 +20,7 @@ describe('TodoList Component', () => {
             </TodoProvider>
         );
 
-        expect(screen.getByText(/Liste des tâches en cours/i)).toBeInTheDocument();
-
+        expect(screen.getByText(/Liste des tâches/i)).toBeInTheDocument();
         expect(screen.getByText(/3. Wireframes/i)).toBeInTheDocument();
         expect(screen.getByText(/4. Design/i)).toBeInTheDocument();
 

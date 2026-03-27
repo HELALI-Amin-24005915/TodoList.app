@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> components/TodoList/TodoList.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AppContent">AppContent</a></li><li><a href="global.html#CreateItemModal">CreateItemModal</a></li><li><a href="global.html#ETATS">ETATS</a></li><li><a href="global.html#ETAT_TERMINE">ETAT_TERMINE</a></li><li><a href="global.html#Filter">Filter</a></li><li><a href="global.html#FolderFilter">FolderFilter</a></li><li><a href="global.html#FolderManager">FolderManager</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Sort">Sort</a></li><li><a href="global.html#Task">Task</a></li><li><a href="global.html#TodoContext">TodoContext</a></li><li><a href="global.html#TodoList">TodoList</a></li><li><a href="global.html#TodoProvider">TodoProvider</a></li><li><a href="global.html#root">root</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/TodoList/TodoList.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Main tasks page module.
+ * Orchestrates filtering, sorting, and task-card rendering with memoized derivation.
+ */
+import React, { useContext, useMemo, useState } from 'react';
+import { Row, Col } from 'react-bootstrap';
+import { TodoContext } from '../../contexts/TodoContext';
+import { ETATS, ETAT_TERMINE } from '../../utils/constants';
+import Task from '../Task/Task';
+
+import Filter from '../Filter/Filter';
+import Sort from '../Sort/Sort';
+import FolderFilter from '../Filter/FolderFilter'; 
+import './TodoList.css';
+
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Main tasks page: combines sorting, filters, and memoized task rendering.
+ * It reads global state from context and computes display-ready tasks.
+ *
+ * @returns {JSX.Element} Todo list view.
+ */
+const TodoList = () => {
+    const {
+        tasks,
+        relations,
+        folderFilterMode,
+        selectedFolderIds,
+        includeNoFolder,
+        setFolderFilterAll,
+        toggleFolderSelection,
+        toggleIncludeNoFolder,
+        setOnlyFolderFilter,
+    } = useContext(TodoContext);
+
+    const [selectedStatuses, setSelectedStatuses] = useState(() =>
+        Object.values(ETATS).filter((etat) => !ETAT_TERMINE.includes(etat))
+    );
+    const [hideOverdue7Plus, setHideOverdue7Plus] = useState(false);
+    const [sortBy, setSortBy] = useState('date_echeance_desc');
+
+    const tachesAffichees = useMemo(() => {
+        const selectedStatusSet = new Set(selectedStatuses);
+        const selectedFolderSet = new Set(selectedFolderIds.map((id) => Number(id)));
+
+        const folderIdsByTask = new Map();
+        relations.forEach((relation) => {
+            const taskId = relation.tache;
+            const folderId = Number(relation.dossier);
+            if (!folderIdsByTask.has(taskId)) {
+                folderIdsByTask.set(taskId, []);
+            }
+            folderIdsByTask.get(taskId).push(folderId);
+        });
+
+        const now = new Date();
+
+        const filtered = tasks
+            .filter((tache) => {
+                if (folderFilterMode === 'ALL') return true;
+
+                const taskFolderIds = folderIdsByTask.get(tache.id) || [];
+                const hasNoFolder = taskFolderIds.length === 0;
+                const inSelectedFolder = taskFolderIds.some((folderId) => selectedFolderSet.has(folderId));
+
+                return (includeNoFolder &amp;&amp; hasNoFolder) || inSelectedFolder;
+            })
+            .filter((tache) => {
+                if (selectedStatusSet.size === 0) return true;
+                return selectedStatusSet.has(tache.etat);
+            })
+            .filter((tache) => {
+                if (!hideOverdue7Plus) return true;
+                if (!tache.date_echeance) return true;
+
+                const dueDate = new Date(tache.date_echeance);
+                if (Number.isNaN(dueDate.getTime())) return true;
+
+                const overdueDays = Math.floor((now - dueDate) / DAY_IN_MS);
+                return overdueDays &lt;= 7;
+            });
+
+        return filtered.sort((a, b) => {
+            if (sortBy === 'date_echeance_desc') return new Date(b.date_echeance) - new Date(a.date_echeance);
+            if (sortBy === 'date_echeance_asc') return new Date(a.date_echeance) - new Date(b.date_echeance);
+            if (sortBy === 'date_creation_desc') return new Date(b.date_creation) - new Date(a.date_creation);
+            if (sortBy === 'name_asc') return a.title.localeCompare(b.title);
+            return 0;
+        });
+    }, [
+        tasks,
+        relations,
+        folderFilterMode,
+        selectedFolderIds,
+        includeNoFolder,
+        selectedStatuses,
+        hideOverdue7Plus,
+        sortBy,
+    ]);
+
+    const handleToggleStatus = (status) => {
+        setSelectedStatuses((prev) => {
+            if (prev.includes(status)) {
+                return prev.filter((s) => s !== status);
+            }
+            return [...prev, status];
+        });
+    };
+
+    const handleApplyActiveOnlyPreset = () => {
+        setSelectedStatuses(Object.values(ETATS).filter((etat) => !ETAT_TERMINE.includes(etat)));
+    };
+
+    const handleSelectAllStatuses = () => {
+        setSelectedStatuses(Object.values(ETATS));
+    };
+
+    return (
+        &lt;section className="todo-list" aria-label="Liste des tâches">
+            &lt;header className="todo-list-header">
+                &lt;h2>Liste des tâches ({tachesAffichees.length})&lt;/h2>
+            &lt;/header>
+
+            &lt;section className="todo-controls p-3 rounded mb-4 shadow-sm mt-3" aria-label="Tri et filtres">
+                &lt;Row className="g-3">
+                    &lt;Col xs={12} lg={3}>
+                        &lt;Sort currentSort={sortBy} onSortChange={setSortBy} />
+                    &lt;/Col>
+                    &lt;Col xs={12} md={6} lg={4}>
+                        &lt;Filter
+                            selectedStatuses={selectedStatuses}
+                            onToggleStatus={handleToggleStatus}
+                            onApplyActiveOnlyPreset={handleApplyActiveOnlyPreset}
+                            onSelectAllStatuses={handleSelectAllStatuses}
+                            hideOverdue7Plus={hideOverdue7Plus}
+                            onToggleHideOverdue={() => setHideOverdue7Plus((prev) => !prev)}
+                        />
+                    &lt;/Col>
+                    &lt;Col xs={12} md={6} lg={5}>
+                        &lt;FolderFilter
+                            folderFilterMode={folderFilterMode}
+                            selectedFolderIds={selectedFolderIds}
+                            includeNoFolder={includeNoFolder}
+                            onShowAllFolders={setFolderFilterAll}
+                            onToggleFolder={toggleFolderSelection}
+                            onToggleIncludeNoFolder={toggleIncludeNoFolder}
+                            onSelectSingleFolder={setOnlyFolderFilter}
+                        />
+                    &lt;/Col>
+                &lt;/Row>
+            &lt;/section>
+            
+            {tachesAffichees.length > 0 ? (
+                &lt;section className="tasks-container" aria-label="Tâches filtrées">
+                    {tachesAffichees.map(tache => (
+                        &lt;Task key={tache.id} data={tache} />
+                    ))}
+                &lt;/section>
+            ) : (
+                &lt;div className="alert alert-info mt-3">
+                    Aucune tâche ne correspond à vos critères de recherche !
+                &lt;/div>
+            )}
+        &lt;/section>
+    );
+};
+
+export default TodoList;</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>
