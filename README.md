@@ -2,6 +2,10 @@
   <h1>✨ TodoList.app</h1>
   <p><i>A comprehensive, responsive, and robust React task management application.</i></p>
 
+  <p>
+    <b><a href="https://helali-amin-24005915.github.io/TodoList.app/">📚 View Deployed Documentation</a></b>
+  </p>
+
   <!-- Tech Stack Badges -->
   <p>
     <a href="https://reactjs.org/" target="_blank">
