@@ -4,6 +4,7 @@
  * into tasks filtered by the selected folder.
  */
 import React, { useContext, useMemo, useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
 import { TodoContext } from '../../contexts/TodoContext';
 import { FaFolderOpen, FaTrash, FaListUl, FaPen, FaXmark, FaFloppyDisk } from 'react-icons/fa6'; // Professional icons
 import './FolderManager.css';
@@ -23,6 +24,7 @@ const FolderManager = () => {
         selectFolderAndGoToTasks,
     } = useContext(TodoContext);
     const [editingFolder, setEditingFolder] = useState(null);
+    const [folderToDelete, setFolderToDelete] = useState(null);
 
     const colorOptions = useMemo(
         () => ([
@@ -131,6 +133,23 @@ const FolderManager = () => {
         });
 
         cancelEdit();
+    };
+
+    const openDeleteModal = (folder) => {
+        setFolderToDelete(folder);
+    };
+
+    const closeDeleteModal = () => {
+        setFolderToDelete(null);
+    };
+
+    const confirmDeleteFolder = () => {
+        if (!folderToDelete?.id) {
+            return;
+        }
+
+        deleteFolder(folderToDelete.id);
+        closeDeleteModal();
     };
 
     return (
@@ -265,9 +284,7 @@ const FolderManager = () => {
                                                 className="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-2"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    if(window.confirm(`Voulez-vous vraiment supprimer le dossier "${folder.title}" ?`)) {
-                                                        deleteFolder(folder.id);
-                                                    }
+                                                    openDeleteModal(folder);
                                                 }}
                                             >
                                                 <FaTrash /> Supprimer
@@ -284,6 +301,28 @@ const FolderManager = () => {
                     Aucun dossier pour le moment. Cliquez sur le bouton "Créer" pour ajouter votre premier projet !
                 </div>
             )}
+
+            <Modal
+                show={Boolean(folderToDelete)}
+                onHide={closeDeleteModal}
+                centered
+                className="folder-delete-modal"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Supprimer le dossier</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Voulez-vous vraiment supprimer le dossier "{folderToDelete?.title}" ?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="outline-secondary" onClick={closeDeleteModal}>
+                        Annuler
+                    </Button>
+                    <Button variant="danger" onClick={confirmDeleteFolder}>
+                        Supprimer
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

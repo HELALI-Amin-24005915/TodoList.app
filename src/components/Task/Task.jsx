@@ -4,6 +4,7 @@
  * deletion, and folder linking controls.
  */
 import React, { useContext, useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
 import { TodoContext } from '../../contexts/TodoContext';
 import { ETATS } from '../../utils/constants';
 // Professional icon imports
@@ -38,7 +39,13 @@ const Task = ({ data }) => {
     const [editEquipiers, setEditEquipiers] = useState(
         Array.isArray(data.equipiers) ? data.equipiers.join(', ') : ''
     );
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const taskFolders = getFoldersByTask(data.id);
+
+    const handleDeleteTask = () => {
+        deleteTask(data.id);
+        setIsDeleteModalOpen(false);
+    };
 
     const getPriorityBadgeClass = (priority) => {
         switch (priority) {
@@ -338,13 +345,35 @@ const Task = ({ data }) => {
                         
                         <button 
                             className="btn btn-sm btn-outline-danger flex-grow-1 d-flex align-items-center justify-content-center gap-2"
-                            onClick={() => deleteTask(data.id)}
+                            onClick={() => setIsDeleteModalOpen(true)}
                         >
                             <FaTrash /> Supprimer
                         </button>
                     </div>
                 </div>
             )}
+
+            <Modal
+                show={isDeleteModalOpen}
+                onHide={() => setIsDeleteModalOpen(false)}
+                centered
+                className="task-delete-modal"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Supprimer la tâche</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Voulez-vous vraiment supprimer la tâche "{data.title}" ?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="outline-secondary" onClick={() => setIsDeleteModalOpen(false)}>
+                        Annuler
+                    </Button>
+                    <Button variant="danger" onClick={handleDeleteTask}>
+                        Supprimer
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
